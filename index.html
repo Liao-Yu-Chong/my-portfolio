@@ -362,7 +362,7 @@
           <p class="contact-sub">如果你正在找一位重視介面細節與程式架構的前端工程師，歡迎和我聊聊——不論是職缺、專案合作或單純交流都可以。</p>
         </div>
         <div class="contact-links reveal">
-          <a href="/cdn-cgi/l/email-protection#0c697a6d623d3c3c3e3e394c6b616d6560226f6361"><span><span class="__cf_email__" data-cfemail="92f7e4f3fca3a2a2a0a0a7d2f5fff3fbfebcf1fdff">[email&#160;protected]</span></span><span class="arr">Email ↗</span></a>
+          <a id="email-link" href="#"><span id="email-text">Email</span><span class="arr">Email ↗</span></a>
           <a href="tel:+886967033917"><span>0967-033-917</span><span class="arr">Call ↗</span></a>
           <a href="https://github.com/Liao-Yu-Chong" target="_blank" rel="noopener"><span>github.com/Liao-Yu-Chong</span><span class="arr">GitHub ↗</span></a>
         </div>
@@ -378,7 +378,18 @@
 
 </main>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+  // build email at runtime so no plaintext address sits in the HTML
+  // (prevents Cloudflare email-obfuscation from mangling the mailto link)
+  (function () {
+    var u = 'evan100225', d = 'gmail' + '.' + 'com';
+    var addr = u + '@' + d;
+    var link = document.getElementById('email-link');
+    var text = document.getElementById('email-text');
+    if (link) { link.href = 'mailto:' + addr; }
+    if (text) { text.textContent = addr; }
+  })();
+
   // nav background on scroll
   const header = document.getElementById('header');
   const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
