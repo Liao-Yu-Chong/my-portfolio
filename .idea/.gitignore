@@ -1,6 +1,10 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/git_toolbox_prj.xml
+/modules.xml
+/my-portfolio.iml
+/vcs.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Ignored default folder with query files
