@@ -18,7 +18,7 @@ type Props = {
 export function SectionHeader({ eyebrow, title, caption, railActive }: Props) {
   return (
     <div className="mb-14 md:mb-20">
-      <MarbleRail count={5} active={railActive} className="mb-10" />
+      <MarbleRail count={4} active={railActive} className="mb-10" />
 
       <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
         <div>

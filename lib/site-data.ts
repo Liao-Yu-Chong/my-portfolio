@@ -11,7 +11,7 @@ export const profile = {
   name: '廖宥驄',
   nameEn: 'Evan Liao',
   role: 'Frontend Engineer',
-  company: '誠諾工程技術',
+  company: '珊琳有限公司',
   location: '高雄市, 台灣',
 
   /** TODO: 換成你的照片，放進 public/ 後把路徑改掉（例：'/avatar.jpg'） */
@@ -39,11 +39,11 @@ export const profile = {
 export const intro = {
   /** 每個 highlight 會在段落裡被標亮 */
   paragraphs: [
-    '目前在 誠諾工程技術 擔任前端工程師，用 Next.js 與 ShadCn UI 重構企業內部 ERP —— 把長年堆疊的表單與流程，收斂成可重用的元件與一致的介面規範。',
+    '目前在 珊琳有限公司 擔任前端工程師，用 Next.js 與 ShadCn UI 重構企業內部 ERP —— 把長年堆疊的表單與流程，收斂成可重用的元件與一致的介面規範。',
     '三段前端歷練，從 Angular / RxJs / NgRx 的企業級生態一路走到 React 與 Next.js。我關注的始終是同一件事：用清晰的架構，做出讓人信任的介面。',
     '在職中，同時對新機會與小型接案保持開放。想聊聊就寫信給我，或直接約個時間。',
   ],
-  highlights: ['誠諾工程技術', 'Next.js', 'Angular', 'RxJs', 'NgRx', 'React', '在職中'],
+  highlights: ['珊琳有限公司', 'Next.js', 'Angular', 'RxJs', 'NgRx', 'React', '在職中'],
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -102,7 +102,6 @@ export const skillGroups: SkillGroup[] = [
 /**
  * 頁尾的一行小字，不是獨立區塊。
  *
- * ⚠️ TODO: 下面三首是我放的示範，不是你真的在聽的歌。
  * 換成真的，或把 tracks 清成空陣列 —— 整行就會消失。
  * 放假的歌單比沒有歌單更糟：有人真的跟你聊起來會很尷尬。
  */
@@ -111,9 +110,9 @@ export const playlist = {
   /** 填了才會出現「整張歌單」連結，例：'https://open.spotify.com/playlist/xxxx' */
   playlistUrl: '',
   tracks: [
-    { title: 'Scenery', artist: 'Ryo Fukui' },
-    { title: 'Aruarian Dance', artist: 'Nujabes' },
-    { title: 'Awake', artist: 'Tycho' },
+    { title: 'Just a Boy', artist: 'DrINsaNE' },
+    { title: 'Lose My Mind (feat. Doja Cat) [From F1® The Movie]', artist: 'Don Toliver, Doja Cat, F1 The Album' },
+    { title: 'Take Over', artist: 'League of Legends, Max' },
   ],
 };
 
@@ -190,45 +189,6 @@ export const projects: Project[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Testimonials                                                        */
-/* ------------------------------------------------------------------ */
-
-export type Testimonial = {
-  quote: string;
-  name: string;
-  title: string;
-  /** true = 還沒拿到真實推薦語，卡片會顯示成待填樣式 */
-  placeholder?: boolean;
-};
-
-/**
- * ⚠️ 我不會幫你捏造別人說過的話。
- * 下面三張都是「待填」的模板 —— 去跟前主管／同事要一兩句真的推薦語，
- * 填進去並把 placeholder 拿掉，卡片就會變成正式樣式。
- * 一則都拿不到的話，把陣列清空，整個區塊會自動不顯示。
- */
-export const testimonials: Testimonial[] = [
-  {
-    quote: '（放一句主管對你「交付品質」的評價 —— 例如接手舊系統、把它整理乾淨的那種具體事蹟。）',
-    name: '姓名',
-    title: '職稱 · 公司',
-    placeholder: true,
-  },
-  {
-    quote: '（放一句同事對你「協作方式」的評價 —— 例如元件規範、code review、跨團隊溝通。）',
-    name: '姓名',
-    title: '職稱 · 公司',
-    placeholder: true,
-  },
-  {
-    quote: '（放一句客戶或 PM 對「成果」的評價 —— 有數字最好，例如開發時間縮短多少。）',
-    name: '姓名',
-    title: '職稱 · 公司',
-    placeholder: true,
-  },
-];
-
-/* ------------------------------------------------------------------ */
 /* Contact                                                             */
 /* ------------------------------------------------------------------ */
 
@@ -262,6 +222,5 @@ export const navSections = [
   { id: 'intro', label: 'intro$' },
   { id: 'stack', label: 'stack$' },
   { id: 'work', label: 'work$' },
-  { id: 'voices', label: 'voices$' },
   { id: 'contact', label: 'contact$' },
 ] as const;

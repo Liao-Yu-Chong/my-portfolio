@@ -31,17 +31,12 @@ Next.js 16（App Router、`output: 'export'`）· TypeScript · Tailwind CSS 4 �
 | 首頁大標 | `profile.headline` |
 | 接案狀態 | `profile.available` / `availabilityLabel` |
 | 技能三欄 | `skillGroups`（`BackendTools` 那欄我只填了履歷上有的） |
-| 音樂歌單 | `playlist`（頁尾一行小字，**現在是示範曲目**，換成真的或清空） |
+| 音樂歌單 | `playlist`（頁尾一行小字，清空 `tracks` 整行就消失） |
 | 專案 | `projects` |
-| 推薦語 | `testimonials`（**目前是待填模板**，見下方） |
 | 預約連結 | `contact.bookACallUrl`（留空的話 CTA 會自動變成寄信） |
 | LinkedIn | `contact.socials` |
 
-### 推薦語區塊
-
-`testimonials` 現在放的是三張**待填模板**，不是真的推薦語 —— 我不會替別人捏造發言。
-
-跟前主管或同事要到真的句子之後，填進去並把該筆的 `placeholder: true` 拿掉，卡片就會從虛線待填樣式變成正式樣式。一則都拿不到的話，把陣列清空，整個區塊會自動消失。
+版面是四個區塊：`intro` / `stack` / `work` / `contact`，順序由 `navSections` 決定。各區塊上方 marble rail 亮的那顆彈珠對應它在 `navSections` 的位置，增刪區塊時 `railActive` 跟 `MarbleRail` 的 `count` 要一起改。
 
 ### 專案封面
 
