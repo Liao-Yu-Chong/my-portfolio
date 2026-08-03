@@ -1,0 +1,5 @@
+[tools]
+# Pins the Node the mise shims resolve to inside this project.
+# Without a pin, `mise current` is empty and npm fails with
+# "cannot find binary path". Node 20 is past end-of-life; 24 is current LTS.
+node = "24.18.0"

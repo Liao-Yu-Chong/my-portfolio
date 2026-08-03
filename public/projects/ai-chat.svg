@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="AI chat interface schematic">
+  <rect width="1200" height="750" fill="#0b0d10"/>
+
+  <text x="64" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="4" fill="#5f6875">AI ASSISTANT</text>
+  <text x="64" y="128" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="46" font-weight="800" letter-spacing="-1" fill="#f4f6f8">CONVERSATION</text>
+
+  <!-- conversation panel -->
+  <rect x="64" y="176" width="760" height="516" fill="#0e1014" stroke="#1f232a"/>
+
+  <!-- incoming bubble -->
+  <rect x="96" y="212" width="420" height="96" rx="16" fill="#14171c" stroke="#2b313a"/>
+  <rect x="120" y="240" width="330" height="13" rx="3" fill="#3a414c"/>
+  <rect x="120" y="264" width="260" height="13" rx="3" fill="#2b313a"/>
+
+  <!-- outgoing bubble -->
+  <rect x="372" y="336" width="420" height="72" rx="16" fill="#ff5f1f"/>
+  <rect x="396" y="362" width="300" height="13" rx="3" fill="#0b0d10" opacity="0.55"/>
+  <rect x="396" y="384" width="180" height="13" rx="3" fill="#0b0d10" opacity="0.35"/>
+
+  <!-- streaming answer -->
+  <rect x="96" y="436" width="530" height="152" rx="16" fill="#14171c" stroke="#2b313a"/>
+  <rect x="120" y="464" width="470" height="13" rx="3" fill="#3a414c"/>
+  <rect x="120" y="488" width="430" height="13" rx="3" fill="#3a414c"/>
+  <rect x="120" y="512" width="486" height="13" rx="3" fill="#2b313a"/>
+  <rect x="120" y="536" width="300" height="13" rx="3" fill="#2b313a"/>
+  <rect x="428" y="536" width="9" height="13" fill="#69e8b4"/>
+
+  <!-- typing dots -->
+  <g fill="#5f6875">
+    <circle cx="128" cy="628" r="6"/>
+    <circle cx="152" cy="628" r="6" opacity="0.66"/>
+    <circle cx="176" cy="628" r="6" opacity="0.33"/>
+  </g>
+
+  <!-- composer -->
+  <rect x="96" y="656" width="696" height="1" fill="#1f232a"/>
+
+  <!-- side: sources / admin -->
+  <rect x="856" y="176" width="280" height="516" fill="#0e1014" stroke="#1f232a"/>
+  <text x="880" y="212" font-family="ui-monospace, monospace" font-size="14" letter-spacing="3" fill="#ff5f1f">SOURCES</text>
+  <line x1="856" y1="232" x2="1136" y2="232" stroke="#1f232a"/>
+
+  <g>
+    <rect x="880" y="260" width="232" height="60" rx="8" fill="#14171c" stroke="#2b313a"/>
+    <rect x="900" y="280" width="120" height="11" rx="3" fill="#3a414c"/>
+    <rect x="900" y="298" width="80" height="9" rx="3" fill="#2b313a"/>
+
+    <rect x="880" y="336" width="232" height="60" rx="8" fill="#14171c" stroke="#ff5f1f"/>
+    <rect x="900" y="356" width="150" height="11" rx="3" fill="#3a414c"/>
+    <rect x="900" y="374" width="96" height="9" rx="3" fill="#2b313a"/>
+
+    <rect x="880" y="412" width="232" height="60" rx="8" fill="#14171c" stroke="#2b313a"/>
+    <rect x="900" y="432" width="104" height="11" rx="3" fill="#3a414c"/>
+    <rect x="900" y="450" width="140" height="9" rx="3" fill="#2b313a"/>
+
+    <rect x="880" y="488" width="232" height="60" rx="8" fill="#14171c" stroke="#2b313a"/>
+    <rect x="900" y="508" width="134" height="11" rx="3" fill="#3a414c"/>
+    <rect x="900" y="526" width="70" height="9" rx="3" fill="#2b313a"/>
+  </g>
+
+  <!-- live indicator -->
+  <circle cx="890" cy="640" r="5" fill="#69e8b4"/>
+  <text x="906" y="646" font-family="ui-monospace, monospace" font-size="13" fill="#5f6875">streaming</text>
+</svg>

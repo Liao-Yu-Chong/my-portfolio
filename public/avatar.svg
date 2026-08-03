@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Evan Liao">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1d23"/>
+      <stop offset="55%" stop-color="#101318"/>
+      <stop offset="100%" stop-color="#0a0b0e"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="24%" r="70%">
+      <stop offset="0%" stop-color="#ff5f1f" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#ff5f1f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <rect width="400" height="400" fill="url(#glow)"/>
+
+  <!-- marble rail, the same motif the site is built on -->
+  <line x1="0" y1="300" x2="400" y2="300" stroke="#2b313a" stroke-width="1"/>
+  <circle cx="70" cy="300" r="4" fill="#2b313a"/>
+  <circle cx="160" cy="300" r="7" fill="#ff5f1f"/>
+  <circle cx="250" cy="300" r="4" fill="#2b313a"/>
+  <circle cx="340" cy="300" r="4" fill="#2b313a"/>
+
+  <text x="200" y="205" text-anchor="middle"
+        font-family="Archivo, Helvetica, Arial, sans-serif" font-size="150" font-weight="800"
+        letter-spacing="-6" fill="#f4f6f8">EL</text>
+
+  <text x="200" y="350" text-anchor="middle"
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15"
+        letter-spacing="5" fill="#5f6875">REPLACE ME</text>
+</svg>

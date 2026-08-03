@@ -1,0 +1,164 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ */
+/* Tokens                                                              */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* Surfaces — a cold near-black, not a neutral grey */
+  --color-void: #08090b;
+  --color-panel: #0e1014;
+  --color-panel-2: #14171c;
+  --color-edge: #1f232a;
+  --color-edge-2: #2b313a;
+
+  /* Ink */
+  --color-ink: #f4f6f8;
+  --color-ink-2: #99a2ae;
+  --color-ink-3: #5f6875;
+
+  /* Accents — ember carries emphasis, signal is reserved for "live" */
+  --color-ember: #ff5f1f;
+  --color-ember-soft: #ff8a55;
+  --color-signal: #69e8b4;
+
+  --font-sans:
+    'Noto Sans TC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+@theme inline {
+  --font-display: var(--font-archivo), 'Noto Sans TC', sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, 'SFMono-Regular', monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                               */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* fixed nav clearance for anchor jumps */
+    scroll-padding-top: 5rem;
+    background-color: var(--color-void);
+    /* clip, not hidden — hidden would break position: sticky descendants */
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-ember) 32%, transparent);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Keep keyboard focus loud — it is the only outline on the page */
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                          */
+/* ------------------------------------------------------------------ */
+
+/* The display face: Archivo pushed wide on its width axis. This is the
+   single typographic move the whole page hangs on. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 0.86;
+}
+
+@utility display-tight {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 108;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  /* tight on phones so the hero headline keeps its scale */
+  padding-inline: 1.25rem;
+
+  @media (width >= 30rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Grain: one shared texture over the whole page so flat blacks don't band */
+@utility grain {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Equalizer bars for the "now playing" row */
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.eq-bar {
+  transform-origin: bottom;
+  animation: eq 1.1s ease-in-out infinite;
+}

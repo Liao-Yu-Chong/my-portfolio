@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="BPM approval flow schematic">
+  <rect width="1200" height="750" fill="#0b0d10"/>
+
+  <text x="64" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="4" fill="#5f6875">BPM</text>
+  <text x="64" y="128" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="46" font-weight="800" letter-spacing="-1" fill="#f4f6f8">APPROVAL FLOW</text>
+
+  <!-- connectors drawn first so nodes sit on top -->
+  <g stroke="#2b313a" stroke-width="2" fill="none">
+    <path d="M304 268 H392"/>
+    <path d="M632 268 H720"/>
+    <path d="M536 316 V468 H392"/>
+    <path d="M960 268 H1020 V468 H960"/>
+    <path d="M304 468 H240 V268"/>
+  </g>
+
+  <!-- arrowheads -->
+  <g fill="#2b313a">
+    <path d="M392 268 l-12 -6 v12 z"/>
+    <path d="M720 268 l-12 -6 v12 z"/>
+    <path d="M392 468 l-12 -6 v12 z"/>
+  </g>
+
+  <!-- node 1: submitted -->
+  <rect x="128" y="220" width="176" height="96" rx="10" fill="#0e1014" stroke="#69e8b4"/>
+  <circle cx="152" cy="248" r="5" fill="#69e8b4"/>
+  <rect x="152" y="266" width="96" height="12" rx="3" fill="#3a414c"/>
+  <rect x="152" y="288" width="64" height="10" rx="3" fill="#2b313a"/>
+
+  <!-- node 2: manager review (active) -->
+  <rect x="392" y="212" width="240" height="112" rx="10" fill="#14171c" stroke="#ff5f1f" stroke-width="2"/>
+  <circle cx="420" cy="244" r="5" fill="#ff5f1f"/>
+  <rect x="420" y="264" width="150" height="13" rx="3" fill="#f4f6f8" opacity="0.75"/>
+  <rect x="420" y="288" width="104" height="10" rx="3" fill="#3a414c"/>
+  <rect x="556" y="284" width="52" height="20" rx="10" fill="#ff5f1f"/>
+
+  <!-- node 3: finance -->
+  <rect x="720" y="220" width="240" height="96" rx="10" fill="#0e1014" stroke="#2b313a"/>
+  <circle cx="748" cy="248" r="5" fill="#5f6875"/>
+  <rect x="748" y="266" width="132" height="12" rx="3" fill="#3a414c"/>
+  <rect x="748" y="288" width="80" height="10" rx="3" fill="#2b313a"/>
+
+  <!-- node 4: rejected branch -->
+  <rect x="304" y="420" width="240" height="96" rx="10" fill="#0e1014" stroke="#2b313a" stroke-dasharray="5 5"/>
+  <circle cx="332" cy="448" r="5" fill="#5f6875"/>
+  <rect x="332" y="466" width="112" height="12" rx="3" fill="#2b313a"/>
+  <rect x="332" y="488" width="68" height="10" rx="3" fill="#1f232a"/>
+
+  <!-- node 5: archived -->
+  <rect x="720" y="420" width="240" height="96" rx="10" fill="#0e1014" stroke="#2b313a"/>
+  <circle cx="748" cy="448" r="5" fill="#5f6875"/>
+  <rect x="748" y="466" width="124" height="12" rx="3" fill="#3a414c"/>
+  <rect x="748" y="488" width="76" height="10" rx="3" fill="#2b313a"/>
+
+  <!-- state timeline at the bottom -->
+  <line x1="128" y1="632" x2="1136" y2="632" stroke="#1f232a"/>
+  <circle cx="128" cy="632" r="5" fill="#2b313a"/>
+  <circle cx="380" cy="632" r="5" fill="#2b313a"/>
+  <circle cx="632" cy="632" r="9" fill="#ff5f1f"/>
+  <circle cx="884" cy="632" r="5" fill="#2b313a"/>
+  <circle cx="1136" cy="632" r="5" fill="#2b313a"/>
+  <text x="128" y="676" font-family="ui-monospace, monospace" font-size="13" fill="#5f6875">draft</text>
+  <text x="596" y="676" font-family="ui-monospace, monospace" font-size="13" fill="#ff5f1f">review</text>
+  <text x="1078" y="676" font-family="ui-monospace, monospace" font-size="13" fill="#5f6875">closed</text>
+</svg>
