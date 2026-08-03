@@ -156,10 +156,10 @@ export const projects: Project[] = [
   {
     name: '企業 ERP 重構',
     kind: '商業專案 · 內部系統',
-    context: '誠諾工程技術',
+    context: '珊琳有限公司 · 誠諾 ERP',
     year: '2025 — now',
     description:
-      '以 Next.js 與 ShadCn UI 重構企業內部 ERP。把重複的表單、表格與流程抽成可重用元件，建立一致的介面規範，讓後續開發不用再從零刻畫面。',
+      '以 Next.js 與 ShadCn UI 重構企業內部 ERP。把重複的表單、表格與流程抽成可重用元件，建立一致的介面規範，讓後續開發不用再從零刻畫面。開發團隊自誠諾開發部門獨立為珊琳後，專案延續進行。',
     cover: '/projects/erp-refactor.svg',
     privateNote: '內部系統，不公開原始碼',
     tags: ['Next.js', 'React', 'TypeScript', 'ShadCn UI', 'Tailwind CSS'],
