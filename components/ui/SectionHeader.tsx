@@ -8,14 +8,17 @@ type Props = {
   /** compound heading, rendered with no space between the two words */
   title: [string, string];
   caption?: string;
-  /** which marble on the divider rail is hot — pass the section's position */
-  railActive?: number;
+  /**
+   * The section's 0-based position in navSections. One marble per section,
+   * so the rail shows where in the stream you are — keep these in sync.
+   */
+  railActive: number;
 };
 
-export function SectionHeader({ eyebrow, title, caption, railActive = 1 }: Props) {
+export function SectionHeader({ eyebrow, title, caption, railActive }: Props) {
   return (
     <div className="mb-14 md:mb-20">
-      <MarbleRail count={6} active={railActive} className="mb-10" />
+      <MarbleRail count={5} active={railActive} className="mb-10" />
 
       <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
         <div>

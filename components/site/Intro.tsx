@@ -33,7 +33,7 @@ export function Intro() {
         eyebrow="intro$"
         title={['Right', 'Now']}
         caption="我是誰、現在在做什麼、什麼時候找得到我。"
-        railActive={1}
+        railActive={0}
       />
 
       <div className="grid gap-12 md:grid-cols-12 md:gap-16">

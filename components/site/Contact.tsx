@@ -6,6 +6,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Reveal } from '@/components/ui/Reveal';
 import { Cta, useBookACall, useEmailAddress } from '@/components/ui/Cta';
 import { MarbleRail } from '@/components/ui/MarbleRail';
+import { NowListening } from '@/components/site/NowListening';
 
 export function Contact() {
   const email = useEmailAddress();
@@ -23,7 +24,7 @@ export function Contact() {
         eyebrow="contact$"
         title={['Say', 'Hello']}
         caption="職缺、專案合作，或只是想聊聊前端 —— 都歡迎。"
-        railActive={6}
+        railActive={4}
       />
 
       <div className="grid gap-14 md:grid-cols-12 md:gap-16">
@@ -56,8 +57,9 @@ export function Contact() {
       </div>
 
       <footer className="mt-24 md:mt-32">
-        <MarbleRail count={7} active={6} className="mb-8" />
-        <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] text-ink-3">
+        <MarbleRail count={5} active={4} className="mb-8" />
+        <NowListening />
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5 font-mono text-[11px] text-ink-3">
           <span>
             © {new Date().getFullYear()} {profile.name} {profile.nameEn}
           </span>

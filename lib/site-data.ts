@@ -100,20 +100,20 @@ export const skillGroups: SkillGroup[] = [
 /* ------------------------------------------------------------------ */
 
 /**
- * TODO: 這是我先放的示範歌單，換成你自己真的在聽的。
- * url 留空就不會變成連結。playlistUrl 填了才會出現「整張歌單」按鈕。
+ * 頁尾的一行小字，不是獨立區塊。
+ *
+ * ⚠️ TODO: 下面三首是我放的示範，不是你真的在聽的歌。
+ * 換成真的，或把 tracks 清成空陣列 —— 整行就會消失。
+ * 放假的歌單比沒有歌單更糟：有人真的跟你聊起來會很尷尬。
  */
 export const playlist = {
-  note: '寫 code 的時候，這幾首會一直循環。',
-  playlistUrl: '', // 例：'https://open.spotify.com/playlist/xxxx'
-  /** 第幾首顯示成「正在播放」（0 起算） */
-  playingIndex: 1,
+  label: '寫 code 時在聽',
+  /** 填了才會出現「整張歌單」連結，例：'https://open.spotify.com/playlist/xxxx' */
+  playlistUrl: '',
   tracks: [
-    { title: 'Ryo Fukui — Scenery', artist: 'Ryo Fukui', length: '8:06', url: '' },
-    { title: 'Weightless', artist: 'Marconi Union', length: '8:08', url: '' },
-    { title: 'Nujabes — Aruarian Dance', artist: 'Nujabes', length: '3:14', url: '' },
-    { title: 'Tycho — Awake', artist: 'Tycho', length: '4:36', url: '' },
-    { title: '落日飛車 Sunset Rollercoaster — My Jinji', artist: '落日飛車', length: '5:39', url: '' },
+    { title: 'Scenery', artist: 'Ryo Fukui' },
+    { title: 'Aruarian Dance', artist: 'Nujabes' },
+    { title: 'Awake', artist: 'Tycho' },
   ],
 };
 
@@ -257,10 +257,10 @@ export const contact = {
 /* Nav                                                                 */
 /* ------------------------------------------------------------------ */
 
+/** 順序也決定了各區塊 marble rail 上哪一顆是亮的 */
 export const navSections = [
   { id: 'intro', label: 'intro$' },
   { id: 'stack', label: 'stack$' },
-  { id: 'playlist', label: 'playlist$' },
   { id: 'work', label: 'work$' },
   { id: 'voices', label: 'voices$' },
   { id: 'contact', label: 'contact$' },

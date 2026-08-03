@@ -31,7 +31,7 @@ Next.js 16（App Router、`output: 'export'`）· TypeScript · Tailwind CSS 4 �
 | 首頁大標 | `profile.headline` |
 | 接案狀態 | `profile.available` / `availabilityLabel` |
 | 技能三欄 | `skillGroups`（`BackendTools` 那欄我只填了履歷上有的） |
-| 音樂歌單 | `playlist`（現在是示範歌單） |
+| 音樂歌單 | `playlist`（頁尾一行小字，**現在是示範曲目**，換成真的或清空） |
 | 專案 | `projects` |
 | 推薦語 | `testimonials`（**目前是待填模板**，見下方） |
 | 預約連結 | `contact.bookACallUrl`（留空的話 CTA 會自動變成寄信） |

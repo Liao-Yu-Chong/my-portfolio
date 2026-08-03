@@ -16,7 +16,7 @@ export function Skills() {
         eyebrow="stack$"
         title={['The', 'Stack']}
         caption="分成三欄：每天在寫的、負責串接的、拿來組介面的。"
-        railActive={2}
+        railActive={1}
       />
 
       {/* three across only from lg — at md each cell is 165px wide and

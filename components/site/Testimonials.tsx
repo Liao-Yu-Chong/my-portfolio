@@ -21,7 +21,7 @@ export function Testimonials() {
             ? '這區還在等真人說話 —— 三張卡片是待填模板。'
             : '一起工作過的人怎麼說。'
         }
-        railActive={5}
+        railActive={3}
       />
 
       <div className="grid gap-6 lg:grid-cols-3">

@@ -15,7 +15,7 @@ export function Projects() {
         eyebrow="work$"
         title={['Selected', 'Work']}
         caption="一個開源的元件庫，三套上線中的企業系統。"
-        railActive={4}
+        railActive={2}
       />
 
       <div className="grid gap-6 md:grid-cols-2 md:gap-8">
