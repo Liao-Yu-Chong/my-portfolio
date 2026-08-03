@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { contact } from '@/lib/site-data';
 import { spring } from '@/lib/motion';
 
@@ -94,12 +94,17 @@ export function IconCta({
       ? 'bg-ember text-void hover:bg-ember-soft'
       : 'border border-edge-2 text-ink hover:border-ember hover:text-ember';
 
+  // The highlight has to contrast with what it sweeps across: pale on the
+  // ember fill, ember on the dark outlined button.
+  const glint = variant === 'primary' ? 'var(--color-ink)' : 'var(--color-ember)';
+
   return (
     <motion.a
       href={href}
       aria-label={label}
       title={label}
-      className={`inline-flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200 ${skin} ${className}`}
+      style={{ '--glint': glint } as CSSProperties}
+      className={`glint inline-flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200 ${skin} ${className}`}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       whileHover={reduced ? undefined : { y: -2 }}
       whileTap={reduced ? undefined : { y: 0, scale: 0.96 }}

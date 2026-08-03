@@ -147,6 +147,89 @@
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Icon buttons                                                        */
+/* ------------------------------------------------------------------ */
+
+/* The angle has to be a registered custom property or it cannot be
+   interpolated — an unregistered var would jump 0deg to 360deg. */
+@property --glint-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glint-spin {
+  to {
+    --glint-angle: 360deg;
+  }
+}
+
+@keyframes icon-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A highlight that travels clockwise around the button's edge on hover.
+   The conic gradient is masked down to a 2px ring by compositing a
+   content-box fill out of a border-box fill. */
+@utility glint {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--glint-angle),
+      transparent 0deg,
+      var(--glint, var(--color-ember)) 22deg,
+      transparent 68deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+    animation: glint-spin 1.15s linear infinite;
+  }
+}
+
+/* Paths are normalised to pathLength=1, so one dash length covers them all.
+   Drawn state is the resting state; hover replays the stroke. */
+.icon-draw path {
+  stroke-dasharray: 1;
+}
+
+.glint:hover .icon-draw path,
+.glint:focus-visible .icon-draw path {
+  animation: icon-draw 0.8s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* `both` holds the hidden start state through the delay, so the second
+   stroke waits instead of popping out and redrawing. */
+.glint:hover .icon-draw path:nth-child(2),
+.glint:focus-visible .icon-draw path:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
 /* Equalizer bars for the "now playing" row */
 @keyframes eq {
   0%,
