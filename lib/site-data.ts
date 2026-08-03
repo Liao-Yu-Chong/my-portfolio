@@ -14,8 +14,7 @@ export const profile = {
   company: '珊琳有限公司',
   location: '高雄市, 台灣',
 
-  /** TODO: 換成你的照片，放進 public/ 後把路徑改掉（例：'/avatar.jpg'） */
-  avatar: '/avatar.svg',
+  avatar: '/avatar.png',
 
   /** 首頁大標，一行一個陣列元素。維持 3 行最好看。 */
   /**
