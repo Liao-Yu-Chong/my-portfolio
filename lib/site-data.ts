@@ -196,14 +196,9 @@ export const contact = {
   emailUser: 'evan100225',
   emailDomain: 'gmail.com',
 
-  /** TODO: 填你的預約連結（Cal.com / Calendly）。留空的話 CTA 會自動改成寄信。 */
-  bookACallUrl: '',
-
   phone: '0967-033-917',
 
   socials: [
-    // TODO: 換成你的 LinkedIn 網址
-    { label: 'LinkedIn', handle: 'in/evan-liao', href: 'https://www.linkedin.com/' },
     {
       label: 'GitHub',
       handle: 'Liao-Yu-Chong',

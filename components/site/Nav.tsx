@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { navSections, profile } from '@/lib/site-data';
-import { Cta, useBookACall } from '@/components/ui/Cta';
+import { Cta, useEmailLinks } from '@/components/ui/Cta';
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>('');
-  const book = useBookACall();
+  const { composeUrl } = useEmailLinks();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -75,13 +75,8 @@ export function Nav() {
           })}
         </div>
 
-        <Cta
-          href={book.href}
-          external={book.external}
-          variant="ghost"
-          className="px-4 py-2 text-xs"
-        >
-          Book a Call
+        <Cta href={composeUrl} external variant="ghost" className="px-4 py-2 text-xs">
+          寄信給我
         </Cta>
       </nav>
     </header>

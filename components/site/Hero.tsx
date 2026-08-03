@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { profile } from '@/lib/site-data';
 import { asset } from '@/lib/asset';
 import { ease } from '@/lib/motion';
-import { Cta, useBookACall, useEmailAddress } from '@/components/ui/Cta';
+import { Cta, useEmailLinks } from '@/components/ui/Cta';
+import { contact } from '@/lib/site-data';
 import { MarbleRail } from '@/components/ui/MarbleRail';
 
 export function Hero() {
   const reduced = useReducedMotion();
-  const book = useBookACall();
-  const email = useEmailAddress();
+  const { address, composeUrl } = useEmailLinks();
+  const github = contact.socials.find((s) => s.label === 'GitHub');
 
   return (
     <section id="top" className="relative flex min-h-svh flex-col justify-between pt-24 pb-10">
@@ -88,12 +89,14 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.7 }}
         >
-          <Cta href={book.href} external={book.external}>
-            Book a Call
+          <Cta href={composeUrl} external>
+            {address || 'Email'}
           </Cta>
-          <Cta href={email ? `mailto:${email}` : '#'} variant="ghost">
-            {email || 'Email'}
-          </Cta>
+          {github ? (
+            <Cta href={github.href} variant="ghost" external>
+              GitHub
+            </Cta>
+          ) : null}
         </motion.div>
 
         <MarbleRail count={7} active={0} />

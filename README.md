@@ -33,8 +33,9 @@ Next.js 16（App Router、`output: 'export'`）· TypeScript · Tailwind CSS 4 �
 | 技能三欄 | `skillGroups`（`BackendTools` 那欄我只填了履歷上有的） |
 | 音樂歌單 | `playlist`（頁尾一行小字，清空 `tracks` 整行就消失） |
 | 專案 | `projects` |
-| 預約連結 | `contact.bookACallUrl`（留空的話 CTA 會自動變成寄信） |
-| LinkedIn | `contact.socials` |
+| 社群連結 | `contact.socials` |
+
+Email 的按鈕開的是 **Gmail 撰寫頁**（`mail.google.com/mail/?view=cm&to=…`），不是 `mailto:` —— 避免 Windows 把它丟給 Outlook。信箱一樣在 runtime 才組起來，靜態 HTML 裡沒有純文字信箱。
 
 版面是四個區塊：`intro` / `stack` / `work` / `contact`，順序由 `navSections` 決定。各區塊上方 marble rail 亮的那顆彈珠對應它在 `navSections` 的位置，增刪區塊時 `railActive` 跟 `MarbleRail` 的 `count` 要一起改。
 

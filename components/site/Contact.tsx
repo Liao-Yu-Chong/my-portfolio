@@ -4,16 +4,15 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { contact, profile } from '@/lib/site-data';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Reveal } from '@/components/ui/Reveal';
-import { Cta, useBookACall, useEmailAddress } from '@/components/ui/Cta';
+import { Cta, useEmailLinks } from '@/components/ui/Cta';
 import { MarbleRail } from '@/components/ui/MarbleRail';
 import { NowListening } from '@/components/site/NowListening';
 
 export function Contact() {
-  const email = useEmailAddress();
-  const book = useBookACall();
+  const { address, composeUrl } = useEmailLinks();
 
   const rows = [
-    { label: 'Email', value: email || '載入中…', href: email ? `mailto:${email}` : undefined },
+    { label: 'Email', value: address || '載入中…', href: address ? composeUrl : undefined },
     { label: 'Phone', value: contact.phone, href: `tel:${contact.phone.replace(/-/g, '')}` },
     ...contact.socials.map((s) => ({ label: s.label, value: s.handle, href: s.href })),
   ];
@@ -35,13 +34,10 @@ export function Contact() {
             <span className="text-ember">好東西</span>吧。
           </p>
           <p className="mt-7 max-w-md text-base leading-[1.9] text-ink-2">
-            如果你正在找一位重視介面細節與程式架構的前端工程師，寫信給我，或直接挑個時間聊 30 分鐘。
+            如果你正在找一位重視介面細節與程式架構的前端工程師，寫封信給我吧 —— 職缺、專案合作，或只是想聊聊前端都可以。
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Cta href={book.href} external={book.external}>
-              Book a Call
-            </Cta>
-            <Cta href={email ? `mailto:${email}` : '#'} variant="ghost">
+            <Cta href={composeUrl} external>
               寄信給我
             </Cta>
           </div>

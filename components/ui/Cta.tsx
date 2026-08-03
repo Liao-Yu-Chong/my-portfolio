@@ -17,16 +17,17 @@ export function useEmailAddress() {
   return address;
 }
 
-/** Book a Call, falling back to a pre-filled email when no scheduler is set. */
-export function useBookACall() {
-  const email = useEmailAddress();
-  if (contact.bookACallUrl) {
-    return { href: contact.bookACallUrl, external: true };
-  }
-  return {
-    href: email ? `mailto:${email}?subject=${encodeURIComponent('想跟你約個時間聊聊')}` : '#',
-    external: false,
-  };
+/**
+ * Opens Gmail's compose view with the address already in the To field,
+ * rather than a mailto: that hands off to whatever client Windows has
+ * registered (usually Outlook).
+ */
+export function useEmailLinks() {
+  const address = useEmailAddress();
+  const composeUrl = address
+    ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(address)}`
+    : '#';
+  return { address, composeUrl };
 }
 
 type CtaProps = {
