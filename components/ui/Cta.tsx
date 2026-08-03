@@ -67,3 +67,45 @@ export function Cta({ href, children, variant = 'primary', external, className =
     </motion.a>
   );
 }
+
+type IconCtaProps = {
+  href: string;
+  /** the accessible name — there is no visible text to fall back on */
+  label: string;
+  icon: ReactNode;
+  variant?: 'primary' | 'ghost';
+  external?: boolean;
+  className?: string;
+};
+
+/** Circular icon-only action. 48px keeps it above the minimum touch target. */
+export function IconCta({
+  href,
+  label,
+  icon,
+  variant = 'primary',
+  external,
+  className = '',
+}: IconCtaProps) {
+  const reduced = useReducedMotion();
+
+  const skin =
+    variant === 'primary'
+      ? 'bg-ember text-void hover:bg-ember-soft'
+      : 'border border-edge-2 text-ink hover:border-ember hover:text-ember';
+
+  return (
+    <motion.a
+      href={href}
+      aria-label={label}
+      title={label}
+      className={`inline-flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200 ${skin} ${className}`}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      whileHover={reduced ? undefined : { y: -2 }}
+      whileTap={reduced ? undefined : { y: 0, scale: 0.96 }}
+      transition={spring}
+    >
+      {icon}
+    </motion.a>
+  );
+}

@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { profile } from '@/lib/site-data';
 import { asset } from '@/lib/asset';
 import { ease } from '@/lib/motion';
-import { Cta, useEmailLinks } from '@/components/ui/Cta';
+import { IconCta, useEmailLinks } from '@/components/ui/Cta';
+import { GitHubIcon, MailIcon } from '@/components/ui/Icons';
 import { contact } from '@/lib/site-data';
 import { MarbleRail } from '@/components/ui/MarbleRail';
 
@@ -89,13 +90,20 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.7 }}
         >
-          <Cta href={composeUrl} external>
-            {address || 'Email'}
-          </Cta>
+          <IconCta
+            href={composeUrl}
+            label={address ? `寄信給我 · ${address}` : '寄信給我'}
+            icon={<MailIcon />}
+            external
+          />
           {github ? (
-            <Cta href={github.href} variant="ghost" external>
-              GitHub
-            </Cta>
+            <IconCta
+              href={github.href}
+              label={`GitHub · ${github.handle}`}
+              icon={<GitHubIcon />}
+              variant="ghost"
+              external
+            />
           ) : null}
         </motion.div>
 
