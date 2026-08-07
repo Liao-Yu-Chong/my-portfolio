@@ -36,7 +36,7 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /my-portfolio
         run: npm run build
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         with:
           # Lets the first run switch the Pages source from "branch" to
           # "GitHub Actions" itself, instead of failing until it is changed by hand.
