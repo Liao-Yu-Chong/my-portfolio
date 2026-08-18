@@ -1,36 +1,39 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { profile } from '@/lib/site-data';
+import { contact, profile } from '@/lib/site-data';
 import { asset } from '@/lib/asset';
 import { ease } from '@/lib/motion';
 import { IconCta, useEmailLinks } from '@/components/ui/Cta';
 import { GitHubIcon, MailIcon } from '@/components/ui/Icons';
-import { contact } from '@/lib/site-data';
 import { MarbleRail } from '@/components/ui/MarbleRail';
 
 export function Hero() {
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
   const { address, composeUrl } = useEmailLinks();
   const github = contact.socials.find((s) => s.label === 'GitHub');
 
-  return (
-    <section id="top" className="relative flex min-h-svh flex-col justify-between pt-24 pb-10">
-      {/* one warm bloom behind the headline, nothing else */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-[8%] left-1/2 h-[38rem] w-[52rem] max-w-full -translate-x-1/2 opacity-70"
-        style={{
-          background:
-            'radial-gradient(closest-side, color-mix(in srgb, var(--color-ember) 16%, transparent), transparent 72%)',
-        }}
-      />
+  // The hero leaves rather than simply scrolling away — it lifts and fades
+  // as the next section arrives, so the two never share the screen equally.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const lift = useTransform(scrollYProgress, [0, 1], ['0px', '72px']);
+  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
+  const exit = reduced ? undefined : { y: lift, opacity: fade };
+
+  return (
+    <section
+      ref={ref}
+      id="top"
+      className="relative flex min-h-svh flex-col justify-between pt-24 pb-10"
+    >
       {/* status line */}
-      <div className="shell relative">
+      <motion.div className="shell relative" style={exit}>
         <motion.div
-          className="flex items-start justify-between gap-6 font-mono text-[11px] tracking-wider text-ink-3 md:text-xs"
+          className="flex items-start justify-between gap-6 border-b border-edge pb-5 font-mono text-[11px] tracking-wider text-ink-3 md:text-xs"
           initial={reduced ? undefined : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.1 }}
@@ -50,18 +53,27 @@ export function Hero() {
             {profile.role}
           </span>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* the thesis */}
-      <div className="shell relative py-[6vh]">
-        <motion.p
-          className="label mb-8 text-ember"
+      <motion.div className="shell relative py-[6vh]" style={exit}>
+        <motion.div
+          className="mb-8 flex items-center gap-5"
           initial={reduced ? undefined : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.15 }}
         >
-          {profile.nameEn} · {profile.name}
-        </motion.p>
+          <p className="label shrink-0 text-ember">
+            {profile.nameEn} · {profile.name}
+          </p>
+          {/* the rule runs out to the gutter — an editorial mark, not a divider */}
+          <motion.span
+            className="h-px flex-1 origin-left bg-edge"
+            initial={reduced ? undefined : { scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.2, ease, delay: 0.4 }}
+          />
+        </motion.div>
 
         {/* Sized so the longest line (19 chars) clears the gutter at every
             width — see the note on profile.headline before editing the copy. */}
@@ -80,10 +92,10 @@ export function Hero() {
             </span>
           ))}
         </h1>
-      </div>
+      </motion.div>
 
       {/* actions + rail */}
-      <div className="shell relative">
+      <motion.div className="shell relative" style={exit}>
         <motion.div
           className="mb-8 flex flex-wrap items-center gap-3"
           initial={reduced ? undefined : { opacity: 0, y: 16 }}
@@ -110,14 +122,21 @@ export function Hero() {
         <MarbleRail count={7} active={0} />
 
         <motion.p
-          className="label mt-6 text-ink-3"
+          className="label mt-6 flex items-center gap-3 text-ink-3"
           initial={reduced ? undefined : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
           往下滑 · scroll
+          <motion.span
+            aria-hidden="true"
+            className="block h-3 w-px bg-ink-3"
+            animate={reduced ? undefined : { scaleY: [0.3, 1, 0.3], opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ transformOrigin: 'top' }}
+          />
         </motion.p>
-      </div>
+      </motion.div>
     </section>
   );
 }
