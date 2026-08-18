@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { navSections, profile } from '@/lib/site-data';
 import { Cta, useEmailLinks } from '@/components/ui/Cta';
@@ -9,6 +9,10 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>('');
   const { composeUrl } = useEmailLinks();
+
+  // The bar doubles as the page's progress readout — the same "values over
+  // time" idea the marble rail carries, drawn as one continuous line.
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -79,6 +83,15 @@ export function Nav() {
           寄信給我
         </Cta>
       </nav>
+
+      {/* Sits on the header's own bottom border, so it reads as that line
+          filling in rather than as a second rule stacked under it. */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-0 -bottom-px h-px origin-left bg-ember"
+        style={{ scaleX: scrollYProgress, opacity: scrolled ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      />
     </header>
   );
 }

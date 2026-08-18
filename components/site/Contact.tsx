@@ -28,7 +28,7 @@ export function Contact() {
 
       <div className="grid gap-14 md:grid-cols-12 md:gap-16">
         <Reveal className="md:col-span-6">
-          <p className="display-tight text-[clamp(1.9rem,4.6vw,3.4rem)] text-ink">
+          <p className="display-zh text-[clamp(2.2rem,5.4vw,4.2rem)] text-ink">
             一起做點
             <br />
             <span className="text-ember">好東西</span>吧。
@@ -53,6 +53,9 @@ export function Contact() {
       </div>
 
       <footer className="mt-24 md:mt-32">
+        {/* The stream ends here — the horizon closes the page the same way
+            each section opened with one. */}
+        <div className="horizon mb-8" />
         <MarbleRail count={4} active={3} className="mb-8" />
         <NowListening />
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5 font-mono text-[11px] text-ink-3">

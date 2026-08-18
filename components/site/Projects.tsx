@@ -8,6 +8,26 @@ import { asset } from '@/lib/asset';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ease, inView } from '@/lib/motion';
 
+/**
+ * The grid is deliberately uneven. Four equal cards read as a list of things
+ * that all matter the same amount, which is not true — the first entry is the
+ * one with a live demo and public source, so it gets the full measure and a
+ * horizontal layout. The rest fall into a 7/5 split and then an indented
+ * block, so the column edge moves as you scroll instead of holding a rule.
+ *
+ * The uneven split waits for lg. At md a 5-span card is 262px wide, which
+ * leaves the title under 200px of measure — the asymmetry is only worth
+ * having once there is room for it, so tablets get an even 6/6.
+ *
+ * Layouts cycle if more projects are added.
+ */
+const LAYOUTS = [
+  { span: 'md:col-span-12', feature: true },
+  { span: 'md:col-span-6 lg:col-span-7', feature: false },
+  { span: 'md:col-span-6 lg:col-span-5', feature: false },
+  { span: 'md:col-span-12 lg:col-span-10 lg:col-start-3', feature: false },
+] as const;
+
 export function Projects() {
   return (
     <section id="work" className="shell scroll-mt-24 py-24 md:py-32">
@@ -18,21 +38,39 @@ export function Projects() {
         railActive={2}
       />
 
-      <div className="grid gap-6 md:grid-cols-2 md:gap-8">
-        {projects.map((project, i) => (
-          <ProjectCard key={project.name} project={project} index={i} />
-        ))}
+      <div className="grid gap-6 md:grid-cols-12 md:gap-8">
+        {projects.map((project, i) => {
+          const layout = LAYOUTS[i % LAYOUTS.length];
+          return (
+            <ProjectCard
+              key={project.name}
+              project={project}
+              index={i}
+              feature={layout.feature}
+              className={layout.span}
+            />
+          );
+        })}
       </div>
     </section>
   );
 }
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+type CardProps = {
+  project: Project;
+  index: number;
+  feature: boolean;
+  className: string;
+};
+
+function ProjectCard({ project, index, feature, className }: CardProps) {
   const reduced = useReducedMotion();
 
   return (
     <motion.article
-      className="group flex flex-col overflow-hidden border border-edge bg-panel"
+      className={`group flex overflow-hidden border border-edge bg-panel transition-colors duration-300 hover:border-edge-2 ${
+        feature ? 'flex-col lg:grid lg:grid-cols-12' : 'flex-col'
+      } ${className}`}
       initial={reduced ? undefined : { opacity: 0, y: 26 }}
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={inView}
@@ -41,7 +79,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       animate="rest"
     >
       {/* cover */}
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-edge bg-void">
+      <div
+        className={`relative overflow-hidden bg-void ${
+          feature
+            ? 'aspect-[16/10] border-b border-edge lg:col-span-7 lg:aspect-auto lg:border-r lg:border-b-0'
+            : 'aspect-[16/10] border-b border-edge'
+        }`}
+      >
         <motion.div
           className="absolute inset-0"
           variants={{ rest: { scale: 1 }, hover: { scale: 1.035 } }}
@@ -51,7 +95,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             src={asset(project.cover)}
             alt={`${project.name} 封面`}
             fill
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes={feature ? '(max-width: 768px) 100vw, 58vw' : '(max-width: 768px) 100vw, 50vw'}
             className="object-cover"
           />
         </motion.div>
@@ -69,13 +113,31 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         />
       </div>
 
-      <div className="flex flex-1 flex-col p-6 md:p-8">
-        <div className="mb-5 flex items-baseline justify-between gap-4">
-          <span className="label text-ember">{project.kind}</span>
-          <span className="font-mono text-xs text-ink-3">{project.year}</span>
+      <div
+        className={`flex flex-1 flex-col p-6 md:p-8 ${feature ? 'lg:col-span-5 lg:justify-center lg:p-10' : ''}`}
+      >
+        {/* The index is outlined, not filled — a filled numeral this size
+            would outrank the project name sitting under it. */}
+        <div className="mb-5 flex items-start justify-between gap-5">
+          <div className="min-w-0">
+            <span className="label block text-ember">{project.kind}</span>
+            <span className="mt-2 block font-mono text-xs text-ink-3">{project.year}</span>
+          </div>
+          <span
+            aria-hidden="true"
+            className={`numeral shrink-0 ${feature ? 'text-[clamp(2.5rem,5vw,4rem)]' : 'text-[clamp(2rem,4vw,3rem)]'}`}
+          >
+            {String(index + 1).padStart(2, '0')}
+          </span>
         </div>
 
-        <h3 className="display-tight mb-1 text-[clamp(1.5rem,2.8vw,2.15rem)] text-ink">
+        <h3
+          className={`display-mixed mb-1 text-ink ${
+            feature
+              ? 'text-[clamp(1.8rem,3.6vw,2.9rem)]'
+              : 'text-[clamp(1.5rem,2.8vw,2.15rem)]'
+          }`}
+        >
           {project.name}
         </h3>
         <p className="mb-5 font-mono text-xs text-ink-3">{project.context}</p>

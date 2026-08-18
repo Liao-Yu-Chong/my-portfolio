@@ -15,20 +15,47 @@
   /* Ink */
   --color-ink: #f4f6f8;
   --color-ink-2: #99a2ae;
-  --color-ink-3: #5f6875;
+  /* Was #5f6875, which measured 3.53:1 on the void — under AA, and it is the
+     colour every small caption uses. #78818e clears 4.5:1 on all three
+     surfaces (5.06 void / 4.83 panel / 4.56 panel-2) while staying a clear
+     third tier under ink-2. */
+  --color-ink-3: #78818e;
+
+  /* The dropped half of a compound heading — "Frontend|Tools". Deliberately
+     darker than ink-3: the seam only reads if the two halves separate, and
+     lifting this to AA body contrast would close the gap. It is safe here
+     because Compound is only ever set at display sizes (24px minimum), where
+     the WCAG threshold is 3:1 — this measures 3.53:1. Do not reuse it on
+     small text. */
+  --color-seam: #5f6875;
 
   /* Accents — ember carries emphasis, signal is reserved for "live" */
   --color-ember: #ff5f1f;
   --color-ember-soft: #ff8a55;
   --color-signal: #69e8b4;
 
-  --font-sans:
-    'Noto Sans TC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* The Chinese face, named once. Every other stack falls back to this
+     rather than to whatever the OS happens to pick — swap this one line to
+     change the Chinese across the whole site. */
+  --font-zh: 'Noto Sans TC';
 }
 
 @theme inline {
-  --font-display: var(--font-archivo), 'Noto Sans TC', sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, 'SFMono-Regular', monospace;
+  /* Two scripts, two faces, and the contrast between them is the point:
+     Latin is grotesque (Archivo) everywhere, Chinese is the serif. Archivo
+     therefore leads the body stack too — leading with the Chinese face
+     would pull Latin body copy into the serif and flatten the pairing. */
+  --font-sans:
+    var(--font-archivo), var(--font-zh), ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-archivo), var(--font-zh), sans-serif;
+  /* JetBrains Mono carries no CJK at all, and neither does anything else in
+     a monospace stack — without --font-zh here, every Chinese label falls
+     through to the system default and renders in a different face on every
+     machine. It sits ahead of `monospace` so Chinese never reaches the
+     generic family; Latin still resolves to JetBrains Mono first. */
+  --font-mono:
+    var(--font-jetbrains), ui-monospace, 'SFMono-Regular', var(--font-zh), monospace;
 }
 
 /* ------------------------------------------------------------------ */
@@ -49,7 +76,9 @@
     background-color: var(--color-void);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-weight: 300;
+    /* 400, not 300 — a serif at light weight on a near-black ground reads as
+       washed out, and it sat too far from the 800 of the display face. */
+    font-weight: 400;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
@@ -109,9 +138,29 @@
   line-height: 0.92;
 }
 
+/* Chinese set at display sizes needs its own metrics. The Latin display
+   utilities run a negative letter-spacing and a sub-1 line-height, both
+   tuned for uppercase Archivo — Han characters already fill their em box,
+   so the same numbers make them collide horizontally and vertically. */
+@utility display-zh {
+  font-family: var(--font-zh), sans-serif;
+  /* 900 to stand next to Archivo's 800. A Han character at 700 carries less
+     apparent weight than Latin at the same number — the strokes are spread
+     over a denser glyph — so matching the numbers would leave the Chinese
+     looking lighter than the English it sits beside. */
+  font-weight: 900;
+  letter-spacing: 0.015em;
+  line-height: 1.22;
+}
+
 @utility label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  /* 12px, not 11: Han characters carry far more strokes per em than Latin
+     letters, so the size that reads as a crisp caption in JetBrains Mono
+     turns to mush in Chinese. 700 holds the strokes open on a near-black
+     ground — at 400 the thin ones close up and the label goes grey. */
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -244,4 +293,105 @@
 .eq-bar {
   transform-origin: bottom;
   animation: eq 1.1s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Backdrop                                                            */
+/* ------------------------------------------------------------------ */
+
+/* The column ruling that sits behind the whole page. It shares .shell's
+   78rem measure, so the lines land on the gutters the content already
+   occupies rather than cutting across it at random. Masked at both ends
+   so it fades in under the hero and out before the footer. */
+@utility rule-grid {
+  width: 100%;
+  max-width: 78rem;
+  height: 100%;
+  margin-inline: auto;
+  background-image: linear-gradient(to right, var(--color-edge) 0 1px, transparent 1px);
+  background-size: calc(100% / 2) 100%;
+  opacity: 0.5;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 20rem,
+    #000 calc(100% - 24rem),
+    transparent 100%
+  );
+
+  /* more columns as there is room for them to stay meaningful */
+  @media (width >= 48rem) {
+    background-size: calc(100% / 4) 100%;
+  }
+
+  @media (width >= 64rem) {
+    background-size: calc(100% / 6) 100%;
+  }
+}
+
+/* A horizon line under a section — the seam between two stretches of black.
+   Brighter in the middle so it reads as light falling on an edge, not a
+   border. */
+@utility horizon {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-edge-2) 22%,
+    color-mix(in srgb, var(--color-ember) 42%, transparent) 50%,
+    var(--color-edge-2) 78%,
+    transparent
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Editorial type                                                      */
+/* ------------------------------------------------------------------ */
+
+/* Outlined display numeral. Used for the project index, where a filled
+   number would compete with the project title next to it. */
+@utility numeral {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-edge-2);
+  transition: -webkit-text-stroke-color 0.4s ease;
+}
+
+/* The lead paragraph of a section — set larger and lighter than body copy
+   so the eye has somewhere to land before the smaller text. Every place
+   this is used runs Chinese, so the tracking stays at zero (Han faces fill
+   their em box; pulling them tighter only closes the gaps between words)
+   and the leading is looser than a Latin equivalent would need. */
+@utility lede {
+  font-weight: 400;
+  line-height: 1.62;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+/* Mixed Han/Latin at display sizes — project names like "企業 ERP 重構".
+   Keeps Archivo for the Latin runs, but drops the negative tracking and
+   opens the leading so the Han characters are not crushed. */
+@utility display-mixed {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 108;
+  letter-spacing: 0;
+  line-height: 1.16;
+}
+
+/* Section headings get a hairline above them rather than a box around. */
+@utility overline {
+  border-top: 1px solid var(--color-edge);
+}
+
+/* The project index warms up with its card. -webkit-text-stroke has no
+   Tailwind variant, so the hover pairing lives here. */
+.group:hover .numeral {
+  -webkit-text-stroke-color: color-mix(in srgb, var(--color-ember) 70%, transparent);
 }

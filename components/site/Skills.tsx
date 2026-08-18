@@ -7,6 +7,12 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Reveal } from '@/components/ui/Reveal';
 import { ease, inView } from '@/lib/motion';
 
+/**
+ * Rows, not columns. Three equal boxes sat next to the project grid and read
+ * as more cards; laid out as an index — heading left, the list running out to
+ * the right margin — the section gets its own shape and the tags stop being
+ * squeezed into a 165px measure.
+ */
 export function Skills() {
   const reduced = useReducedMotion();
 
@@ -19,19 +25,22 @@ export function Skills() {
         railActive={1}
       />
 
-      {/* three across only from lg — at md each cell is 165px wide and
-          "FrontendTools" does not fit */}
-      <div className="grid gap-px border border-edge bg-edge lg:grid-cols-3">
+      <div className="border-t border-edge">
         {skillGroups.map((group, gi) => (
-          <Reveal key={group.head.join('')} delay={gi * 0.1} className="bg-void">
-            <div className="flex h-full flex-col p-7 md:p-8">
-              <h3 className="display-tight text-[clamp(1.5rem,2.6vw,2.1rem)]">
-                <Compound words={group.head} />
-              </h3>
-              <p className="label mt-3 mb-7 text-ink-3">{group.caption}</p>
+          <Reveal key={group.head.join('')} delay={gi * 0.08}>
+            <div className="group grid gap-5 border-b border-edge py-9 transition-colors duration-300 hover:border-edge-2 md:grid-cols-12 md:gap-8 md:py-11">
+              <div className="md:col-span-4">
+                <h3 className="display-tight text-[clamp(1.5rem,2.6vw,2.1rem)]">
+                  <Compound words={group.head} />
+                </h3>
+                <p className="label mt-3 flex items-center gap-3 text-ink-3">
+                  <span aria-hidden="true" className="block h-px w-5 bg-edge-2" />
+                  {group.caption}
+                </p>
+              </div>
 
               <motion.ul
-                className="flex flex-wrap gap-2"
+                className="flex flex-wrap content-start gap-2 md:col-span-8"
                 initial="hidden"
                 whileInView="show"
                 viewport={inView}
@@ -44,7 +53,7 @@ export function Skills() {
                       hidden: reduced ? {} : { opacity: 0, y: 8 },
                       show: { opacity: 1, y: 0, transition: { duration: 0.4, ease } },
                     }}
-                    className="rounded-full border border-edge px-3 py-1.5 font-mono text-xs text-ink-2 transition-colors duration-200 hover:border-ember/60 hover:text-ink"
+                    className="rounded-full border border-edge px-3.5 py-1.5 font-mono text-xs text-ink-2 transition-colors duration-200 hover:border-ember/60 hover:text-ink"
                   >
                     {item}
                   </motion.li>

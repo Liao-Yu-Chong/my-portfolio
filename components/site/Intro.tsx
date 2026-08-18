@@ -38,19 +38,26 @@ export function Intro() {
 
       <div className="grid gap-12 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-7">
-          {intro.paragraphs.map((p, i) => (
-            <Reveal
-              key={i}
-              delay={i * 0.08}
-              className={
-                i === 0
-                  ? 'mb-6 text-[clamp(1.15rem,2.2vw,1.6rem)] leading-[1.7] text-ink-2'
-                  : 'mb-6 text-base leading-[1.9] text-ink-2 last:mb-0'
-              }
-            >
-              <p>{highlight(p, intro.highlights)}</p>
-            </Reveal>
-          ))}
+          {intro.paragraphs.map((p, i) =>
+            /* The opening paragraph is the section's thesis, so it is set as a
+               pull quote — brighter ink, larger measure, ember rule down the
+               left. The rest fall back to body copy. */
+            i === 0 ? (
+              <Reveal key={i} className="mb-9 border-l-2 border-ember pl-6 md:pl-8">
+                <p className="lede text-[clamp(1.25rem,2.5vw,1.8rem)] text-ink">
+                  {highlight(p, intro.highlights)}
+                </p>
+              </Reveal>
+            ) : (
+              <Reveal
+                key={i}
+                delay={i * 0.08}
+                className="mb-6 text-base leading-[1.9] text-ink-2 last:mb-0"
+              >
+                <p>{highlight(p, intro.highlights)}</p>
+              </Reveal>
+            ),
+          )}
         </div>
 
         <Reveal delay={0.15} className="md:col-span-5 md:col-start-8">
@@ -58,7 +65,7 @@ export function Intro() {
             {facts.map((f) => (
               <div
                 key={f.k}
-                className="grid grid-cols-[5.5rem_1fr] items-baseline gap-4 border-b border-edge py-4"
+                className="grid grid-cols-[5.5rem_1fr] items-baseline gap-4 border-b border-edge py-4 transition-colors duration-300 hover:border-edge-2"
               >
                 <dt className="label text-ink-3">{f.k}</dt>
                 <dd className={`text-sm ${f.hot ? 'text-signal' : 'text-ink'}`}>{f.v}</dd>
