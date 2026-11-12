@@ -18,8 +18,10 @@ export const profile = {
 
   /** 首頁大標，一行一個陣列元素。維持 3 行最好看。 */
   /**
-   * 每行最多 ~19 個字元。Archivo 在 wdth 112 大約一個字元 0.70em，
-   * 再長就會擠不下第一行的字級。
+   * 手機上每行會在空白處斷開，所以真正的限制是「最長的單字」：
+   * 目前是 INTERFACES,（約 7.5em），在 320px 手機剛好塞得下最小字級。
+   * 換成更長的單字會撐破畫面；整行建議維持 ~19 個字元以內，
+   * 桌機才能每行一排。
    */
   headline: ['I BUILD INTERFACES,', 'REFACTOR LEGACY,', 'SHIP WHAT LASTS.'],
 
