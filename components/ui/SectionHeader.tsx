@@ -47,10 +47,13 @@ export function SectionHeader({ eyebrow, title, caption, railActive }: Props) {
             <span aria-hidden="true" className="block h-px w-7 bg-edge-2" />
             {eyebrow}
           </p>
-          {/* min is 1.75rem, not 2.5 — "SelectedWork" is a single unbreakable
-              token at 9.55em and would run past the gutter on a 375px phone */}
+          {/* Max is 2.5× the min so browser zoom can still take the text to
+              200% (vw doesn't grow with zoom; rem does). Compound breaks at
+              the seam, so the 2.1rem min only has to fit "Selected" — at 320px
+              "SelectedWork" (≈9.55em) wraps; from 375px up it holds one line,
+              since 0.75rem + 6vw stays under (100vw − gutters) / 9.55. */}
           <motion.h2
-            className="display text-[clamp(1.75rem,7vw,5.25rem)]"
+            className="display text-[clamp(2.1rem,0.75rem_+_6vw,5.25rem)]"
             style={reduced ? undefined : { x: drift }}
           >
             <Compound words={title} />

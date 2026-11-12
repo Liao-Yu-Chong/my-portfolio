@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@oddbird/popover-polyfill": "^0.7.3",
     "framer-motion": "^13.5.1",
     "next": "^16.4.3",
     "react": "^19.3.1",

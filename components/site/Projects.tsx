@@ -148,7 +148,7 @@ function ProjectCard({ project, index, feature, className }: CardProps) {
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-edge bg-panel-2 px-3 py-1 font-mono text-[11px] text-ink-2"
+              className="rounded-full border border-edge bg-panel-2 px-3 py-1 font-mono text-[0.6875rem] text-ink-2"
             >
               {tag}
             </li>

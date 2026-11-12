@@ -114,6 +114,95 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Skip link                                                           */
+/* ------------------------------------------------------------------ */
+
+/* Visually hidden until it takes keyboard focus, then pinned top-left so
+   showing it doesn't push the page down. */
+.skip-link:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--color-ember);
+  color: var(--color-void);
+  font-size: 0.875rem;
+}
+
+/* The skip target is <main tabindex="-1">: it takes focus so the next Tab
+   starts inside the content, but a container is not a control, so no ring. */
+main:focus {
+  outline: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Site menu                                                           */
+/* ------------------------------------------------------------------ */
+
+/* One list for both layouts. Narrow: a popover panel under the header
+   (opened by the 選單 button; closed state is the UA's display:none).
+   Wide: the same list reset to an inline row. The wide rules also apply
+   before hydration, while the popover attribute is still on it. */
+.site-menu {
+  position: fixed;
+  inset: auto;
+  /* header height (h-16) plus a small gap */
+  inset-block-start: 4.5rem;
+  inset-inline-end: 1.25rem;
+  inline-size: min(calc(100dvw - 2.5rem), 15rem);
+  max-block-size: calc(100dvh - 6rem);
+  overflow: auto;
+  margin: 0;
+  padding: 0.375rem;
+  border: 1px solid var(--color-edge-2);
+  border-radius: 0.75rem;
+  background: var(--color-panel);
+  color: var(--color-ink);
+
+  @media (width >= 30rem) {
+    inset-inline-end: 1.5rem;
+  }
+
+  @media (width >= 48rem) {
+    /* md:h-20 */
+    inset-block-start: 5.5rem;
+    inset-inline-end: 2.5rem;
+  }
+
+  @media (width >= 64rem) {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    inline-size: auto;
+    max-block-size: none;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+}
+
+.site-menu::backdrop {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ */
 /* Hero entrance                                                       */
 /* ------------------------------------------------------------------ */
 

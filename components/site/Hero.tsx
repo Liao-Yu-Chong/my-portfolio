@@ -38,7 +38,7 @@ export function Hero() {
       {/* status line */}
       <motion.div className="shell relative" style={exit}>
         <div
-          className="hero-fade flex items-start justify-between gap-6 border-b border-edge pb-5 font-mono text-[11px] tracking-wider text-ink-3 md:text-xs"
+          className="hero-fade flex items-start justify-between gap-6 border-b border-edge pb-5 font-mono text-[0.6875rem] tracking-wider text-ink-3 md:text-xs"
           style={delay(0.1)}
         >
           <span className="flex items-center gap-2.5">

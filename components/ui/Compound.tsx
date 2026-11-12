@@ -12,6 +12,10 @@ export function Compound({ words, className = '' }: { words: [string, string]; c
   return (
     <span className={className}>
       <span className="text-ink">{words[0]}</span>
+      {/* An optional break at the seam. With it, "SelectedWork" stops being
+          one unbreakable token, so the heading's minimum size no longer has
+          to fit the whole word on a 320px phone — there it wraps instead. */}
+      <wbr />
       <span className="text-seam">{words[1]}</span>
     </span>
   );

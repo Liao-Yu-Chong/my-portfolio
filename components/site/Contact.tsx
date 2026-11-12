@@ -1,12 +1,10 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { contact, profile } from '@/lib/site-data';
+import { contact } from '@/lib/site-data';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Reveal } from '@/components/ui/Reveal';
 import { Cta, useEmailLinks } from '@/components/ui/Cta';
-import { MarbleRail } from '@/components/ui/MarbleRail';
-import { NowListening } from '@/components/site/NowListening';
 
 export function Contact() {
   const { address, composeUrl } = useEmailLinks();
@@ -18,7 +16,8 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" className="shell scroll-mt-24 py-24 md:py-32">
+    // No bottom padding: the page footer follows directly and supplies it.
+    <section id="contact" className="shell scroll-mt-24 pt-24 md:pt-32">
       <SectionHeader
         eyebrow="contact$"
         title={['Say', 'Hello']}
@@ -51,20 +50,6 @@ export function Contact() {
           </ul>
         </Reveal>
       </div>
-
-      <footer className="mt-24 md:mt-32">
-        {/* The stream ends here — the horizon closes the page the same way
-            each section opened with one. */}
-        <div className="horizon mb-8" />
-        <MarbleRail count={4} active={3} className="mb-8" />
-        <NowListening />
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5 font-mono text-[11px] text-ink-3">
-          <span>
-            © {new Date().getFullYear()} {profile.name} {profile.nameEn}
-          </span>
-          <span>Next.js · TypeScript · Tailwind CSS · Framer Motion</span>
-        </div>
-      </footer>
     </section>
   );
 }

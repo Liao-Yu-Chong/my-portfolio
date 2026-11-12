@@ -66,6 +66,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
       </head>
       <body className="grain">
+        <a href="#main" className="skip-link">
+          跳到主要內容
+        </a>
         <Backdrop />
         {children}
       </body>
