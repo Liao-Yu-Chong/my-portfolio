@@ -36,8 +36,9 @@
 
   /* The Chinese face, named once. Every other stack falls back to this
      rather than to whatever the OS happens to pick — swap this one line to
-     change the Chinese across the whole site. */
-  --font-zh: 'Noto Sans TC';
+     change the Chinese across the whole site. Points at the next/font
+     variable (layout.tsx), which also carries its metric-adjusted fallback. */
+  --font-zh: var(--font-noto-tc);
 }
 
 @theme inline {
@@ -200,6 +201,29 @@ main:focus {
 
 .site-menu::backdrop {
   display: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Forced Colors (Windows High Contrast)                               */
+/* ------------------------------------------------------------------ */
+
+/* Forced Colors repaints text and backgrounds with system colours and drops
+   gradients. Two things carried meaning that way and would vanish:
+   - the current nav section, marked by a background-painted dot and a
+     text-colour step (both get flattened) — so underline the link instead;
+   - the horizon seams between sections, which are a gradient — so redraw
+     them as a plain border.
+   Primary buttons keep their outline via a transparent border (Cta.tsx). */
+@media (forced-colors: active) {
+  #site-menu a[aria-current='true'] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+  }
+
+  .horizon {
+    border-block-start: 1px solid GrayText;
+  }
 }
 
 /* ------------------------------------------------------------------ */

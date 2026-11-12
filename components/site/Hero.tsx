@@ -1,7 +1,6 @@
 'use client';
 
 import type { CSSProperties } from 'react';
-import Image from 'next/image';
 import { contact, profile } from '@/lib/site-data';
 import { asset } from '@/lib/asset';
 import { IconCta, useEmailLinks } from '@/components/ui/Cta';
@@ -126,17 +125,22 @@ function AvatarChip() {
       {/* alt is empty on purpose: this sits inside the h1, so any text here
           becomes part of the heading ("…REFACTOR LEGACY, 廖宥驄 Evan Liao SHIP…").
           The name is already read out by the label right above. */}
-      <Image
-        src={asset(profile.avatar)}
-        alt=""
-        fill
-        sizes="120px"
-        className="object-cover"
-        // Eager (it's above the fold, and next/image defaults to lazy) but
-        // not `priority`: the LCP element is the headline text, so a tiny
-        // avatar shouldn't take the high-priority fetch slot.
-        loading="eager"
-      />
+      {/* A plain <picture>, not next/image: a static export can't resize or
+          re-encode, so next/image would just pass the file through. The files
+          are pre-built at 256px by `npm run avatar` — AVIF first, WebP for
+          browsers without it. Eager (above the fold) but no fetchpriority:
+          the LCP element is the headline text, not this chip. */}
+      <picture>
+        <source type="image/avif" srcSet={asset(`${profile.avatar}.avif`)} />
+        <img
+          src={asset(`${profile.avatar}.webp`)}
+          alt=""
+          width={256}
+          height={256}
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
     </span>
   );
 }

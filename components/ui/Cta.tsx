@@ -33,6 +33,12 @@ export function useEmailLinks() {
   return { address, composeUrl };
 }
 
+// The primary skin carries a transparent border: invisible normally, but in
+// Forced Colors (Windows High Contrast) the ember fill is replaced and the
+// border is repainted in a system colour, so the button keeps its outline.
+const PRIMARY_SKIN = 'border border-transparent bg-ember text-void hover:bg-ember-soft';
+const GHOST_SKIN = 'border border-edge-2 text-ink hover:border-ember hover:text-ember';
+
 /** New-tab attributes, but only for links that actually leave the page. */
 function externalAttrs(href: string, external?: boolean) {
   return external && /^https?:/.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {};
@@ -49,12 +55,11 @@ type CtaProps = {
 export function Cta({ href, children, variant = 'primary', external, className = '' }: CtaProps) {
   const reduced = useReducedMotion();
 
+  // pointer-coarse:min-h-11 — 44px on touch screens. The header instance
+  // overrides the padding down to py-2, which left it at 42px.
   const base =
-    'group inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-normal transition-colors duration-200';
-  const skin =
-    variant === 'primary'
-      ? 'bg-ember text-void hover:bg-ember-soft'
-      : 'border border-edge-2 text-ink hover:border-ember hover:text-ember';
+    'group inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-normal transition-colors duration-200 pointer-coarse:min-h-11';
+  const skin = variant === 'primary' ? PRIMARY_SKIN : GHOST_SKIN;
 
   return (
     <motion.a
@@ -97,10 +102,7 @@ export function IconCta({
 }: IconCtaProps) {
   const reduced = useReducedMotion();
 
-  const skin =
-    variant === 'primary'
-      ? 'bg-ember text-void hover:bg-ember-soft'
-      : 'border border-edge-2 text-ink hover:border-ember hover:text-ember';
+  const skin = variant === 'primary' ? PRIMARY_SKIN : GHOST_SKIN;
 
   // The highlight has to contrast with what it sweeps across: pale on the
   // ember fill, ember on the dark outlined button.
@@ -109,8 +111,9 @@ export function IconCta({
   return (
     <motion.a
       href={href}
+      // aria-label only — no `title`: it duplicated the name and a title
+      // tooltip can't be reached from the keyboard.
       aria-label={label}
-      title={label}
       style={{ '--glint': glint } as CSSProperties}
       className={`glint inline-flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200 ${skin} ${className}`}
       {...externalAttrs(href, external)}

@@ -79,7 +79,9 @@ export function Nav() {
       }`}
     >
       <div className="shell flex h-16 items-center justify-between gap-3 md:h-20">
-        <a href="#top" className="flex items-center gap-2.5">
+        {/* min-h: the label alone is 20px tall — 24px everywhere (WCAG
+            2.5.8), 44px on touch screens. */}
+        <a href="#top" className="flex min-h-6 items-center gap-2.5 pointer-coarse:min-h-11">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full rounded-full bg-ember" />
           </span>
@@ -91,7 +93,7 @@ export function Nav() {
             type="button"
             popoverTarget="site-menu"
             aria-controls="site-menu"
-            className="label rounded-full border border-edge-2 px-4 py-2 text-ink-2 transition-colors duration-200 hover:border-ember hover:text-ember lg:hidden"
+            className="label inline-flex items-center rounded-full border border-edge-2 px-4 py-2 text-ink-2 transition-colors duration-200 hover:border-ember hover:text-ember pointer-coarse:min-h-11 lg:hidden"
           >
             選單
           </button>

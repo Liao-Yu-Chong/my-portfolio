@@ -66,7 +66,13 @@ function ContactRow({ label, value, href }: { label: string; value: string; href
       <span className="label text-ink-3">{label}</span>
       <span className="truncate text-sm text-ink transition-colors duration-200 group-hover:text-ember">
         {value}
-        {href ? <span className="ml-2 font-mono text-ink-3">↗</span> : null}
+        {/* Decorative, like every other ↗ on the page — unhidden, a screen
+            reader reads it out as "north east arrow". */}
+        {href ? (
+          <span aria-hidden="true" className="ml-2 font-mono text-ink-3">
+            ↗
+          </span>
+        ) : null}
       </span>
     </motion.div>
   );

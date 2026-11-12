@@ -14,7 +14,11 @@ export const profile = {
   company: '珊琳有限公司',
   location: '高雄市, 台灣',
 
-  avatar: '/avatar.png',
+  /**
+   * 頭像路徑，不含副檔名 —— 會載入 /avatar.avif，舊瀏覽器退回 /avatar.webp。
+   * 換頭像：把新照片存成 assets/avatar.png，執行 `npm run avatar`。
+   */
+  avatar: '/avatar',
 
   /** 首頁大標，一行一個陣列元素。維持 3 行最好看。 */
   /**

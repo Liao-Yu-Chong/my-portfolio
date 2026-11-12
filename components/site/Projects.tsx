@@ -91,9 +91,12 @@ function ProjectCard({ project, index, feature, className }: CardProps) {
           variants={{ rest: { scale: 1 }, hover: { scale: 1.035 } }}
           transition={{ duration: 0.7, ease }}
         >
+          {/* Decorative for now: the covers are illustrated placeholders, and
+              "X 封面" told a screen reader nothing the heading doesn't. Give
+              it a real description when a cover becomes an actual screenshot. */}
           <Image
             src={asset(project.cover)}
-            alt={`${project.name} 封面`}
+            alt=""
             fill
             sizes={feature ? '(max-width: 768px) 100vw, 58vw' : '(max-width: 768px) 100vw, 50vw'}
             className="object-cover"
@@ -155,28 +158,38 @@ function ProjectCard({ project, index, feature, className }: CardProps) {
           ))}
         </ul>
 
-        {/* links pinned to the bottom so cards align */}
-        <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-edge pt-5">
-          {project.live ? <ProjectLink href={project.live} label="Live Demo" /> : null}
-          {project.github ? <ProjectLink href={project.github} label="GitHub" /> : null}
+        {/* The card's actions region — a <footer>, pinned to the bottom so
+            cards align. */}
+        <footer className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-edge pt-5">
+          {project.live ? <ProjectLink href={project.live} label="Live Demo" project={project.name} /> : null}
+          {project.github ? <ProjectLink href={project.github} label="GitHub" project={project.name} /> : null}
           {!project.live && !project.github && project.privateNote ? (
             <span className="font-mono text-xs text-ink-3">🔒 {project.privateNote}</span>
           ) : null}
-        </div>
+        </footer>
       </div>
     </motion.article>
   );
 }
 
-function ProjectLink({ href, label }: { href: string; label: string }) {
+/**
+ * The visible label stays short ("GitHub"), but every card has the same
+ * ones, so the accessible name carries the project too ("GitHub UI Gallery")
+ * — otherwise a screen reader's link list shows several identical names
+ * pointing at different URLs. The visible text still leads the name.
+ *
+ * min-h: the text alone is 16px — 24px everywhere, 44px on touch screens.
+ */
+function ProjectLink({ href, label, project }: { href: string; label: string; project: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group/link inline-flex items-center gap-2 font-mono text-xs text-ink transition-colors duration-200 hover:text-ember"
+      className="group/link inline-flex min-h-6 items-center gap-2 font-mono text-xs text-ink transition-colors duration-200 hover:text-ember pointer-coarse:min-h-11"
     >
       {label}
+      <span className="sr-only"> {project}</span>
       <span
         aria-hidden="true"
         className="transition-transform duration-300 motion-safe:group-hover/link:translate-x-0.5 motion-safe:group-hover/link:-translate-y-0.5"

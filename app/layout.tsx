@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, JetBrains_Mono } from 'next/font/google';
+import { Archivo, JetBrains_Mono, Noto_Sans_TC } from 'next/font/google';
 import './globals.css';
 import { Backdrop } from '@/components/ui/Backdrop';
 
@@ -18,6 +18,21 @@ const jetbrains = JetBrains_Mono({
   // would be synthesised bold while the Chinese half used a real 700.
   weight: ['400', '700'],
   variable: '--font-jetbrains',
+  display: 'swap',
+});
+
+/* Self-hosted at build time instead of a <link> to fonts.googleapis.com:
+   that stylesheet was render-blocking and on another origin, so first
+   paint waited on two extra connections. next/font keeps Google's
+   unicode-range slicing (~100 slices), so a visitor still only downloads
+   the glyph ranges they read. The variable font covers all four weights
+   used (400 body, 500 highlighted terms, 700 labels, 900 display) with one
+   file per slice. The Han slices aren't a named subset, so nothing is
+   preloaded — the browser fetches slices as text needs them. */
+const notoTc = Noto_Sans_TC({
+  subsets: ['latin'],
+  preload: false,
+  variable: '--font-noto-tc',
   display: 'swap',
 });
 
@@ -42,19 +57,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-Hant" className={`${archivo.variable} ${jetbrains.variable}`}>
+    <html lang="zh-Hant" className={`${archivo.variable} ${jetbrains.variable} ${notoTc.variable}`}>
       <head>
-        {/* Noto Sans TC ships as ~100 unicode-range subsets. Loading it from
-            Google keeps that splitting intact so browsers only fetch the
-            glyph ranges a visitor actually reads — which is why the 900,
-            used by a single headline, costs almost nothing. Four weights:
-            400 body, 500 highlighted terms, 700 labels, 900 display. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
-          rel="stylesheet"
-        />
         {/* Entrance animations render their "before" state into the static HTML
             (opacity:0, translateY). Without JS nothing would ever clear it and
             the page would read as blank, so undo it up front. */}

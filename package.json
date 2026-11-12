@@ -7,7 +7,8 @@
     "dev": "next dev -p 3003",
     "build": "next build",
     "start": "next start -p 3003",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "avatar": "node scripts/build-avatar.mjs"
   },
   "dependencies": {
     "@oddbird/popover-polyfill": "^0.7.3",
