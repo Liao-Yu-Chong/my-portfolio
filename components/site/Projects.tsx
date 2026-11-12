@@ -179,7 +179,7 @@ function ProjectLink({ href, label }: { href: string; label: string }) {
       {label}
       <span
         aria-hidden="true"
-        className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+        className="transition-transform duration-300 motion-safe:group-hover/link:translate-x-0.5 motion-safe:group-hover/link:-translate-y-0.5"
       >
         ↗
       </span>

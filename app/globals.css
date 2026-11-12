@@ -101,17 +101,88 @@
     border-radius: 2px;
   }
 
+  /* Reduced motion is handled per animation, not with a global
+     `animation-duration: 0.001ms` override: that also killed the colour
+     transitions on links and buttons, which are not motion. Every looping or
+     spatial animation below opts in under `no-preference` instead, so the
+     reduced state is simply the static, final one. */
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
     }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero entrance                                                       */
+/* ------------------------------------------------------------------ */
+
+/* Plain CSS so the headline (the LCP element) animates in as soon as the
+   HTML parses, instead of sitting hidden until framer-motion hydrates.
+   Each element sets its own --d (delay) and, for hero-rise, --rise.
+   `both` holds the "from" state through the delay. Uses the individual
+   `translate`/`scale` properties so it composes with the transform that
+   the scroll-linked exit writes on the parent wrappers. */
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise, 10px);
+  }
+}
+
+@keyframes hero-wipe {
+  from {
+    translate: 0 110%;
+  }
+}
+
+@keyframes hero-rule {
+  from {
+    scale: 0 1;
+  }
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    scale: 1 0.3;
+    opacity: 0.3;
+  }
+  50% {
+    scale: 1 1;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-fade {
+    animation: hero-fade 0.8s ease both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .hero-rise {
+    animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .hero-wipe {
+    animation: hero-wipe 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .hero-rule {
+    animation: hero-rule 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .scroll-cue {
+    animation: scroll-cue 2.2s ease-in-out infinite;
   }
 }
 
@@ -254,10 +325,15 @@
     transition: opacity 0.25s ease;
   }
 
+  /* Under reduced motion the ring still appears (an opacity change), it
+     just holds still instead of orbiting. */
   &:hover::after,
   &:focus-visible::after {
     opacity: 1;
-    animation: glint-spin 1.15s linear infinite;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: glint-spin 1.15s linear infinite;
+    }
   }
 }
 
@@ -267,16 +343,18 @@
   stroke-dasharray: 1;
 }
 
-.glint:hover .icon-draw path,
-.glint:focus-visible .icon-draw path {
-  animation: icon-draw 0.8s cubic-bezier(0.65, 0, 0.35, 1) both;
-}
+@media (prefers-reduced-motion: no-preference) {
+  .glint:hover .icon-draw path,
+  .glint:focus-visible .icon-draw path {
+    animation: icon-draw 0.8s cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
 
-/* `both` holds the hidden start state through the delay, so the second
-   stroke waits instead of popping out and redrawing. */
-.glint:hover .icon-draw path:nth-child(2),
-.glint:focus-visible .icon-draw path:nth-child(2) {
-  animation-delay: 0.14s;
+  /* `both` holds the hidden start state through the delay, so the second
+     stroke waits instead of popping out and redrawing. */
+  .glint:hover .icon-draw path:nth-child(2),
+  .glint:focus-visible .icon-draw path:nth-child(2) {
+    animation-delay: 0.14s;
+  }
 }
 
 /* Equalizer bars for the "now playing" row */
@@ -292,7 +370,10 @@
 
 .eq-bar {
   transform-origin: bottom;
-  animation: eq 1.1s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: eq 1.1s ease-in-out infinite;
+  }
 }
 
 /* ------------------------------------------------------------------ */
