@@ -1,39 +1,30 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
-import type { ReactNode } from 'react';
-import { ease, inView } from '@/lib/motion';
-
-type Props = {
-  children: ReactNode;
-  /** seconds */
-  delay?: number;
-  className?: string;
-  as?: 'div' | 'li' | 'section' | 'article' | 'p';
-};
+import { useEffect } from 'react';
 
 /**
- * The site's one scroll entrance. Everything uses this so the page reads as a
- * single sequence rather than a pile of unrelated effects.
+ * Starts the page's one reveal: every [data-reveal] element gets .is-in as
+ * it scrolls into view (globals.css staggers them by --i). The elements are
+ * visible without script — the hidden start state only applies under the
+ * .js class the boot script sets — and under reduced motion they are simply
+ * there. Render once, anywhere on the page.
  */
-export function Reveal({ children, delay = 0, className, as = 'div' }: Props) {
-  const reduced = useReducedMotion();
-  const Tag = motion[as];
-
-  if (reduced) {
-    const Plain = as;
-    return <Plain className={className}>{children}</Plain>;
-  }
-
-  return (
-    <Tag
-      className={className}
-      initial={{ opacity: 0, y: 22 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={inView}
-      transition={{ duration: 0.7, ease, delay }}
-    >
-      {children}
-    </Tag>
-  );
+export function RevealObserver() {
+  useEffect(() => {
+    const targets = document.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  return null;
 }

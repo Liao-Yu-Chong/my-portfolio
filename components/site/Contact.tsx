@@ -1,11 +1,18 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import type { CSSProperties } from 'react';
 import { contact } from '@/lib/site-data';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { Reveal } from '@/components/ui/Reveal';
-import { Cta, useEmailLinks } from '@/components/ui/Cta';
+import { ButtonLink, externalAttrs, useEmailLinks } from '@/components/ui/Cta';
+import { RevealObserver } from '@/components/ui/Reveal';
 
+/** --i for the reveal's stagger. */
+const at = (i: number) => ({ '--i': i }) as CSSProperties;
+
+/**
+ * Contact, set as a letter: the statement, why to write, then the ways to
+ * reach me as a set of rows. Its lines are the page's one reveal.
+ */
 export function Contact() {
   const { address, composeUrl } = useEmailLinks();
 
@@ -16,80 +23,45 @@ export function Contact() {
   ];
 
   return (
-    // No bottom padding: the page footer follows directly and supplies it.
-    <section id="contact" className="shell scroll-mt-24 pt-24 md:pt-32">
-      <SectionHeader
-        eyebrow="contact$"
-        title={['Say', 'Hello']}
-        caption="職缺、專案合作，或只是想聊聊前端 —— 都歡迎。"
-        railActive={3}
-      />
+    <section id="contact" className="section" aria-labelledby="contact-title">
+      <RevealObserver />
+      <div className="container">
+        <SectionHeader id="contact-title" title="Say hello" lead="職缺、專案合作，或只是想聊聊前端，都歡迎。" />
 
-      <div className="grid gap-14 md:grid-cols-12 md:gap-16">
-        <Reveal className="md:col-span-6">
-          <p className="display-zh text-[clamp(2.2rem,5.4vw,4.2rem)] text-ink">
-            一起做點
-            <br />
-            <span className="text-ember">好東西</span>吧。
-          </p>
-          <p className="mt-7 max-w-md text-base leading-[1.9] text-ink-2">
-            如果你正在找一位重視介面細節與程式架構的前端工程師，寫封信給我吧 —— 職缺、專案合作，或只是想聊聊前端都可以。
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Cta href={composeUrl} external>
-              寄信給我
-            </Cta>
+        <div className="grid-12 letter">
+          <div className="letter__body">
+            <p className="letter__statement" data-reveal style={at(0)}>
+              一起做點好東西吧。
+            </p>
+            <p data-reveal style={at(1)}>
+              如果你正在找一位重視介面細節與程式架構的前端工程師，寫封信給我吧：職缺、專案合作，或只是想聊聊前端都可以。
+            </p>
+            <div data-reveal style={at(2)}>
+              <ButtonLink href={composeUrl} external>
+                寄信給我
+              </ButtonLink>
+            </div>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.12} className="md:col-span-5 md:col-start-8">
-          <ul className="border-t border-edge">
-            {rows.map((row) => (
-              <ContactRow key={row.label} {...row} />
+          <ul className="contacts set">
+            {rows.map((row, i) => (
+              <li key={row.label} data-reveal style={at(i + 3)}>
+                {row.href ? (
+                  <a href={row.href} {...externalAttrs(row.href, true)}>
+                    <span className="label">{row.label}</span>
+                    <span className="contacts__value">{row.value}</span>
+                  </a>
+                ) : (
+                  <div className="contacts__row">
+                    <span className="label">{row.label}</span>
+                    <span>{row.value}</span>
+                  </div>
+                )}
+              </li>
             ))}
           </ul>
-        </Reveal>
+        </div>
       </div>
     </section>
-  );
-}
-
-function ContactRow({ label, value, href }: { label: string; value: string; href?: string }) {
-  const reduced = useReducedMotion();
-
-  const inner = (
-    <motion.div
-      className="flex items-center justify-between gap-6 border-b border-edge py-5"
-      whileHover={reduced || !href ? undefined : { paddingLeft: 10 }}
-      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-    >
-      <span className="label text-ink-3">{label}</span>
-      <span className="truncate text-sm text-ink transition-colors duration-200 group-hover:text-ember">
-        {value}
-        {/* Decorative, like every other ↗ on the page — unhidden, a screen
-            reader reads it out as "north east arrow". */}
-        {href ? (
-          <span aria-hidden="true" className="ml-2 font-mono text-ink-3">
-            ↗
-          </span>
-        ) : null}
-      </span>
-    </motion.div>
-  );
-
-  return (
-    <li>
-      {href ? (
-        <a
-          href={href}
-          className="group block"
-          {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        >
-          {inner}
-        </a>
-      ) : (
-        inner
-      )}
-    </li>
   );
 }

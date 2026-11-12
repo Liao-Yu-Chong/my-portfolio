@@ -20,21 +20,18 @@ export const profile = {
    */
   avatar: '/avatar',
 
-  /** 首頁大標，一行一個陣列元素。維持 3 行最好看。 */
   /**
-   * 手機上每行會在空白處斷開，所以真正的限制是「最長的單字」：
-   * 目前是 INTERFACES,（約 7.5em），在 320px 手機剛好塞得下最小字級。
-   * 換成更長的單字會撐破畫面；整行建議維持 ~19 個字元以內，
-   * 桌機才能每行一排。
+   * 首頁大標。橘色的字型參考線量的是第一行，所以第一行最好是完整的一句話開頭。
+   * 七個英文字以內；寬螢幕會排成兩行，手機會在空白處自然斷行。
    */
-  headline: ['I BUILD INTERFACES,', 'REFACTOR LEGACY,', 'SHIP WHAT LASTS.'],
+  headline: 'I build interfaces, refactor legacy, ship what lasts.',
 
-  /** 頭像要插在第幾行的行首（0 起算） */
-  avatarOnLine: 2,
+  /** 大標下的一句話（Hallmark：十二個字左右，從自我介紹濃縮）。 */
+  summary: '高雄的前端工程師，正在用 Next.js 重構企業 ERP。',
 
-  /** 目前是否接案／找機會 —— 設 false 會關掉 hero 上的綠點 */
+  /** 目前是否接案／找機會 —— 設 false 會拿掉 hero 上這行字 */
   available: true,
-  availabilityLabel: '開放新機會 · 可談接案',
+  availabilityLabel: '開放新機會，可談接案',
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -44,7 +41,7 @@ export const profile = {
 export const intro = {
   /** 每個 highlight 會在段落裡被標亮 */
   paragraphs: [
-    '目前在 珊琳有限公司 擔任前端工程師，用 Next.js 與 ShadCn UI 重構企業內部 ERP —— 把長年堆疊的表單與流程，收斂成可重用的元件與一致的介面規範。',
+    '目前在 珊琳有限公司 擔任前端工程師，用 Next.js 與 ShadCn UI 重構企業內部 ERP，把長年堆疊的表單與流程，收斂成可重用的元件與一致的介面規範。',
     '三段前端歷練，從 Angular / RxJs / NgRx 的企業級生態一路走到 React 與 Next.js。我關注的始終是同一件事：用清晰的架構，做出讓人信任的介面。',
     '在職中，同時對新機會與小型接案保持開放。想聊聊就寫信給我，或直接約個時間。',
   ],
@@ -134,10 +131,10 @@ export type Project = {
   year: string;
   description: string;
   /**
-   * 封面圖。我先畫了示意圖放在 public/projects/，
-   * 之後截真實畫面存成同名檔案就會自動換掉。
+   * 真實畫面截圖（public/ 底下的路徑），有的話這個專案會在「作品」區
+   * 展開成案例，截圖跟著捲動一張張播放。內部系統沒有截圖就留空。
    */
-  cover: string;
+  captures?: { src: string; width: number; height: number; caption: string }[];
   live?: string;
   github?: string;
   /** 內部系統不能公開時，用這個說明為什麼沒有連結 */
@@ -148,46 +145,48 @@ export type Project = {
 export const projects: Project[] = [
   {
     name: 'UI Gallery',
-    kind: '個人專案 · 元件展示廊',
+    kind: '個人專案，元件展示廊',
     context: 'Personal',
     year: '2025',
     description:
       '自製的 React 元件展示廊，收錄可重用的互動 UI 元件。首發作品是支援月／週／日檢視、多日事件長條、拖拉移動與節日標記的行事曆元件。',
-    cover: '/projects/ui-gallery.svg',
+    captures: [
+      { src: '/work/calendar-month.webp', width: 1400, height: 1148, caption: '行事曆的月檢視：多日事件長條、節日標記。' },
+      { src: '/work/calendar-week.webp', width: 1400, height: 1148, caption: '切到週檢視，同一批事件依日期排開。' },
+      { src: '/work/calendar-day.webp', width: 1400, height: 1148, caption: '日檢視只看一天。' },
+      { src: '/work/btn-agile.webp', width: 1400, height: 1261, caption: '第二個元件：停用時點下去會翻轉逃跑的按鈕。' },
+    ],
     live: 'https://liao-yu-chong.github.io/ui-gallery/',
     github: 'https://github.com/Liao-Yu-Chong/ui-gallery',
     tags: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'date-fns', '@dnd-kit'],
   },
   {
     name: '企業 ERP 重構',
-    kind: '商業專案 · 內部系統',
-    context: '珊琳有限公司 · 誠諾 ERP',
-    year: '2025 — now',
+    kind: '商業專案，內部系統',
+    context: '珊琳有限公司，誠諾 ERP',
+    year: '2025 至今',
     description:
       '以 Next.js 與 ShadCn UI 重構企業內部 ERP。把重複的表單、表格與流程抽成可重用元件，建立一致的介面規範，讓後續開發不用再從零刻畫面。開發團隊自誠諾開發部門獨立為珊琳後，專案延續進行。',
-    cover: '/projects/erp-refactor.svg',
     privateNote: '內部系統，不公開原始碼',
     tags: ['Next.js', 'React', 'TypeScript', 'ShadCn UI', 'Tailwind CSS'],
   },
   {
     name: 'AI 產文與客服機器人',
-    kind: '商業專案 · 產品前端',
+    kind: '商業專案，產品前端',
     context: '席恩資訊',
     year: '2024',
     description:
       '參與 AI 產文與客服機器人產品的前端開發。以 Angular 串接後端 API，打造即時互動的對話介面與管理後台，處理串流回應與長列表效能。',
-    cover: '/projects/ai-chat.svg',
     privateNote: '商業產品，不公開原始碼',
     tags: ['Angular', 'TypeScript', 'RxJs', 'SCSS', 'RESTful API'],
   },
   {
     name: 'ERP / BPM 流程系統',
-    kind: '商業專案 · 流程引擎',
+    kind: '商業專案，流程引擎',
     context: '哈瑪星科技',
-    year: '2022 — 2023',
+    year: '2022 到 2023',
     description:
       '前端職涯的起點。以 Angular 搭配 PrimeNG 開發 ERP 與 BPM 簽核流程系統，深入 RxJs 與 NgRx 狀態管理，奠定模組化開發與版本控制的實務基礎。',
-    cover: '/projects/bpm-flow.svg',
     privateNote: '內部系統，不公開原始碼',
     tags: ['Angular', 'RxJs', 'NgRx', 'PrimeNG', 'BPM', 'BitBucket'],
   },
@@ -217,10 +216,10 @@ export const contact = {
 /* Nav                                                                 */
 /* ------------------------------------------------------------------ */
 
-/** 順序也決定了各區塊 marble rail 上哪一顆是亮的 */
+/** 照頁面上的順序排；導覽列會標出目前讀到哪一段 */
 export const navSections = [
-  { id: 'intro', label: 'intro$' },
-  { id: 'stack', label: 'stack$' },
-  { id: 'work', label: 'work$' },
-  { id: 'contact', label: 'contact$' },
+  { id: 'intro', label: '關於' },
+  { id: 'work', label: '作品' },
+  { id: 'stack', label: '技術' },
+  { id: 'contact', label: '聯絡' },
 ] as const;

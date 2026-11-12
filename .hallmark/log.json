@@ -1,0 +1,31 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "Feature Stack",
+  "theme": "studio",
+  "axes": "light/roman-serif/warm",
+  "hero": "Banner",
+  "nav": "masthead",
+  "footer": "letter close",
+  "imagery": "the product",
+  "photos": [],
+  "entry": "/",
+  "fingerprint": "f9a281",
+  "sections": [
+   "Banner hero",
+   "Split (Right now)",
+   "Pinned diptych (UI Gallery case)",
+   "Index (projects)",
+   "Switcher (specimen cards)",
+   "Statement + rows (letter)",
+   "Letter close"
+  ],
+  "signature": "the headline under construction, guides measured from the live font",
+  "waived": [],
+  "modes": "light+dark",
+  "prompt": "a frontend engineer personal portfolio, also sent to interviewers as a CV",
+  "date": "2026-11-12"
+ }
+]

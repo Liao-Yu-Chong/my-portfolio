@@ -1,25 +1,31 @@
 import { profile } from '@/lib/site-data';
-import { MarbleRail } from '@/components/ui/MarbleRail';
 import { NowListening } from '@/components/site/NowListening';
 
+/** The build date, in the letter's own voice. A static export is built once
+    per deploy, so this is the date the page was last published. */
+const builtOn = new Intl.DateTimeFormat('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date());
+
 /**
- * The page footer. It used to sit inside the contact <section>, where it was
- * just a footer of that section; at the top level, after <main>, it is the
- * page's contentinfo landmark.
+ * The page footer, closing the letter the contact section began: a sign-off
+ * on the proof, the date it was written, then the postscript. Outside <main>,
+ * so it is the page's contentinfo landmark.
  */
 export function Footer() {
   return (
-    <footer className="shell mt-24 pb-24 md:mt-32 md:pb-32">
-      {/* The stream ends here — the horizon closes the page the same way
-          each section opened with one. */}
-      <div className="horizon mb-8" />
-      <MarbleRail count={4} active={3} className="mb-8" />
-      <NowListening />
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5 font-mono text-[0.6875rem] text-ink-3">
-        <span>
-          © {new Date().getFullYear()} {profile.name} {profile.nameEn}
-        </span>
-        <span>Next.js · TypeScript · Tailwind CSS · Framer Motion</span>
+    <footer className="close proof">
+      <div className="container">
+        <p className="close__sign">
+          {profile.name} {profile.nameEn}
+        </p>
+        <p className="close__date label">寫於高雄，{builtOn}</p>
+
+        <div className="close__notes">
+          <NowListening />
+          <p>以 Next.js、TypeScript、Tailwind CSS 製作。</p>
+          <p>
+            © {new Date().getFullYear()} {profile.name} {profile.nameEn}
+          </p>
+        </div>
       </div>
     </footer>
   );

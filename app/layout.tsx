@@ -1,34 +1,34 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, JetBrains_Mono, Noto_Sans_TC } from 'next/font/google';
+import { Geist, Hedvig_Letters_Serif, Noto_Sans_TC, Noto_Serif_TC } from 'next/font/google';
 import './globals.css';
-import { Backdrop } from '@/components/ui/Backdrop';
 
-/* Archivo is variable on both weight and width — the width axis is what
-   gives the headline its poster proportions. */
-const archivo = Archivo({
+/* Studio's two faces, self-hosted at build time. Hedvig Letters Serif is the
+   heads, the wordmark and figures; its optical-size axis keeps the hand
+   right from the 200px headline down to an item title. Geist is the body. */
+const hedvig = Hedvig_Letters_Serif({
   subsets: ['latin'],
-  axes: ['wdth'],
-  variable: '--font-archivo',
+  axes: ['opsz'],
+  variable: '--font-hedvig',
   display: 'swap',
 });
 
-const jetbrains = JetBrains_Mono({
+const geist = Geist({
   subsets: ['latin'],
-  // 700 is what .label now sets — without it the Latin half of every label
-  // would be synthesised bold while the Chinese half used a real 700.
-  weight: ['400', '700'],
-  variable: '--font-jetbrains',
+  variable: '--font-geist',
   display: 'swap',
 });
 
-/* Self-hosted at build time instead of a <link> to fonts.googleapis.com:
-   that stylesheet was render-blocking and on another origin, so first
-   paint waited on two extra connections. next/font keeps Google's
-   unicode-range slicing (~100 slices), so a visitor still only downloads
-   the glyph ranges they read. The variable font covers all four weights
-   used (400 body, 500 highlighted terms, 700 labels, 900 display) with one
-   file per slice. The Han slices aren't a named subset, so nothing is
-   preloaded — the browser fetches slices as text needs them. */
+/* The Han halves of the same two voices: Noto Serif TC under the serif heads,
+   Noto Sans TC under the body. Both keep Google's ~100 unicode-range slices,
+   so a visitor fetches only the glyph ranges they read; the Han slices are
+   not a named subset, so nothing is preloaded. */
+const notoSerifTc = Noto_Serif_TC({
+  subsets: ['latin'],
+  preload: false,
+  variable: '--font-noto-serif-tc',
+  display: 'swap',
+});
+
 const notoTc = Noto_Sans_TC({
   subsets: ['latin'],
   preload: false,
@@ -51,29 +51,34 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#08090b',
-  colorScheme: 'dark',
+  // Matches --color-paper in each mode.
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f3f7f8' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1214' },
+  ],
+  colorScheme: 'light dark',
 };
+
+/* Runs before first paint, so a saved choice never flashes the other mode,
+   and marks the page as scripted for the one reveal (visible without it). */
+const bootScript = `try{var m=localStorage.getItem('mode');if(m==='light'||m==='dark')document.documentElement.dataset.mode=m}catch(e){}document.documentElement.classList.add('js')`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-Hant" className={`${archivo.variable} ${jetbrains.variable} ${notoTc.variable}`}>
+    // suppressHydrationWarning: the boot script sets data-mode and .js on
+    // <html> before React hydrates.
+    <html
+      lang="zh-Hant"
+      className={`${hedvig.variable} ${geist.variable} ${notoSerifTc.variable} ${notoTc.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Entrance animations render their "before" state into the static HTML
-            (opacity:0, translateY). Without JS nothing would ever clear it and
-            the page would read as blank, so undo it up front. */}
-        <noscript>
-          <style>{`
-            [style*="opacity:0"], [style*="opacity: 0"] { opacity: 1 !important; }
-            [style*="translateY"] { transform: none !important; }
-          `}</style>
-        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
-      <body className="grain">
+      <body>
         <a href="#main" className="skip-link">
           跳到主要內容
         </a>
-        <Backdrop />
         {children}
       </body>
     </html>

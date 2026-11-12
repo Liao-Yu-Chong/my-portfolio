@@ -1,9 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { contact } from '@/lib/site-data';
-import { spring } from '@/lib/motion';
 
 /**
  * The address is assembled after mount so it never sits as plain text in the
@@ -33,95 +31,30 @@ export function useEmailLinks() {
   return { address, composeUrl };
 }
 
-// The primary skin carries a transparent border: invisible normally, but in
-// Forced Colors (Windows High Contrast) the ember fill is replaced and the
-// border is repainted in a system colour, so the button keeps its outline.
-const PRIMARY_SKIN = 'border border-transparent bg-ember text-void hover:bg-ember-soft';
-const GHOST_SKIN = 'border border-edge-2 text-ink hover:border-ember hover:text-ember';
-
 /** New-tab attributes, but only for links that actually leave the page. */
-function externalAttrs(href: string, external?: boolean) {
+export function externalAttrs(href: string, external?: boolean) {
   return external && /^https?:/.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 }
 
-type CtaProps = {
+type ButtonLinkProps = {
   href: string;
   children: ReactNode;
-  variant?: 'primary' | 'ghost';
+  /** The page's one orange fill. Everything else is a printed outline. */
+  primary?: boolean;
+  small?: boolean;
   external?: boolean;
   className?: string;
 };
 
-export function Cta({ href, children, variant = 'primary', external, className = '' }: CtaProps) {
-  const reduced = useReducedMotion();
-
-  // pointer-coarse:min-h-11 — 44px on touch screens. The header instance
-  // overrides the padding down to py-2, which left it at 42px.
-  const base =
-    'group inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-normal transition-colors duration-200 pointer-coarse:min-h-11';
-  const skin = variant === 'primary' ? PRIMARY_SKIN : GHOST_SKIN;
-
+/**
+ * Studio's printed control: a 1px ink border with a second rule inset
+ * inside it, and crop marks at the corners that open a little on hover.
+ */
+export function ButtonLink({ href, children, primary, small, external, className = '' }: ButtonLinkProps) {
+  const classes = ['btn', 'crop', primary && 'btn--primary', small && 'btn--sm', className].filter(Boolean).join(' ');
   return (
-    <motion.a
-      href={href}
-      className={`${base} ${skin} ${className}`}
-      {...externalAttrs(href, external)}
-      whileHover={reduced ? undefined : { y: -2 }}
-      whileTap={reduced ? undefined : { y: 0, scale: 0.98 }}
-      transition={spring}
-    >
-      <span>{children}</span>
-      <span
-        aria-hidden="true"
-        className="font-mono transition-transform duration-300 motion-safe:group-hover:translate-x-1 motion-safe:group-hover:-translate-y-0.5"
-      >
-        ↗
-      </span>
-    </motion.a>
-  );
-}
-
-type IconCtaProps = {
-  href: string;
-  /** the accessible name — there is no visible text to fall back on */
-  label: string;
-  icon: ReactNode;
-  variant?: 'primary' | 'ghost';
-  external?: boolean;
-  className?: string;
-};
-
-/** Circular icon-only action. 48px keeps it above the minimum touch target. */
-export function IconCta({
-  href,
-  label,
-  icon,
-  variant = 'primary',
-  external,
-  className = '',
-}: IconCtaProps) {
-  const reduced = useReducedMotion();
-
-  const skin = variant === 'primary' ? PRIMARY_SKIN : GHOST_SKIN;
-
-  // The highlight has to contrast with what it sweeps across: pale on the
-  // ember fill, ember on the dark outlined button.
-  const glint = variant === 'primary' ? 'var(--color-ink)' : 'var(--color-ember)';
-
-  return (
-    <motion.a
-      href={href}
-      // aria-label only — no `title`: it duplicated the name and a title
-      // tooltip can't be reached from the keyboard.
-      aria-label={label}
-      style={{ '--glint': glint } as CSSProperties}
-      className={`glint inline-flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200 ${skin} ${className}`}
-      {...externalAttrs(href, external)}
-      whileHover={reduced ? undefined : { y: -2 }}
-      whileTap={reduced ? undefined : { y: 0, scale: 0.96 }}
-      transition={spring}
-    >
-      {icon}
-    </motion.a>
+    <a href={href} className={classes} {...externalAttrs(href, external)}>
+      {children}
+    </a>
   );
 }
