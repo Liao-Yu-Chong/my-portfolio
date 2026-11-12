@@ -276,6 +276,174 @@ main:focus {
 }
 
 /* ------------------------------------------------------------------ */
+/* Scroll-linked effects                                               */
+/* ------------------------------------------------------------------ */
+
+/* All four used to be framer-motion useScroll/useTransform, i.e. JS on
+   every scroll frame. They are scroll-driven animations now and run on
+   the compositor. Each is decorative, so this is progressive enhancement:
+   without support, or under reduced motion, the base styles below are the
+   static resting state and nothing moves. `animation-timeline` and
+   `animation-range` come after the `animation` shorthand, which would
+   otherwise reset them. */
+
+/* Resting states */
+.backdrop-grid {
+  opacity: 0.6;
+}
+
+.backdrop-ember {
+  top: 6vh;
+  opacity: 0.5;
+}
+
+.backdrop-signal {
+  top: 60vh;
+  opacity: 0.2;
+}
+
+/* No bar at all unless it can track the scroll. */
+.scroll-progress {
+  scale: 0 1;
+}
+
+/* The ember/signal layers are centred with Tailwind's -translate-x-1/2,
+   which uses the same `translate` property — so the keyframes keep -50%. */
+@keyframes backdrop-grid {
+  0% {
+    translate: 0 0;
+    opacity: 0;
+  }
+  12%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0 -7%;
+    opacity: 0.3;
+  }
+}
+
+@keyframes backdrop-ember {
+  0% {
+    translate: -50% -6vh;
+    opacity: 0.85;
+  }
+  30% {
+    opacity: 0.45;
+  }
+  100% {
+    translate: -50% 42vh;
+    opacity: 0.25;
+  }
+}
+
+@keyframes backdrop-signal {
+  0% {
+    translate: -50% 92vh;
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.16;
+  }
+  100% {
+    translate: -50% 22vh;
+    opacity: 0.3;
+  }
+}
+
+@keyframes grow-progress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+/* Lift 72px over the whole exit, but be fully faded by 85% of it. */
+@keyframes hero-exit {
+  from {
+    translate: 0 0;
+    opacity: 1;
+  }
+  85% {
+    opacity: 0;
+  }
+  to {
+    translate: 0 72px;
+    opacity: 0;
+  }
+}
+
+@keyframes section-drift {
+  from {
+    translate: -1rem 0;
+  }
+  to {
+    translate: 1rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .backdrop-grid {
+      animation: backdrop-grid auto linear both;
+      animation-timeline: scroll(root);
+    }
+
+    .backdrop-ember {
+      top: 0;
+      animation: backdrop-ember auto linear both;
+      animation-timeline: scroll(root);
+    }
+
+    .backdrop-signal {
+      top: 0;
+      animation: backdrop-signal auto linear both;
+      animation-timeline: scroll(root);
+    }
+
+    .scroll-progress {
+      animation: grow-progress auto linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    /* exit-crossing runs from the hero's top edge reaching the top of the
+       viewport to its bottom edge leaving it — the old ['start start',
+       'end start'] offsets. */
+    /* inset 0: the default `auto` inset would pick up html's
+       scroll-padding-top (5rem, for the fixed nav) and start the exit
+       early — framer's offsets never accounted for it. */
+    .hero {
+      view-timeline: --hero;
+      view-timeline-inset: 0;
+    }
+
+    .hero-exit {
+      animation: hero-exit auto linear both;
+      animation-timeline: --hero;
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    /* The header box is the timeline (not the h2 itself) so the drift spans
+       the whole time the header is on screen: 'start end' → 'end start',
+       i.e. the default `cover` range. */
+    .section-head {
+      view-timeline: --section-head;
+      view-timeline-inset: 0;
+    }
+
+    .section-drift {
+      animation: section-drift auto linear both;
+      animation-timeline: --section-head;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Utilities                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -541,7 +709,9 @@ main:focus {
   font-weight: 400;
   line-height: 1.62;
   letter-spacing: 0;
-  text-wrap: balance;
+  /* pretty, not balance: this is running paragraph text (the Intro pull
+     quote), where pretty avoids orphans without narrowing every line. */
+  text-wrap: pretty;
 }
 
 /* Mixed Han/Latin at display sizes — project names like "企業 ERP 重構".

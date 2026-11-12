@@ -1,7 +1,3 @@
-'use client';
-
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { Compound } from './Compound';
 import { MarbleRail } from './MarbleRail';
 import { Reveal } from './Reveal';
@@ -27,17 +23,12 @@ type Props = {
  * above, it was competing with the section that had just ended.
  */
 export function SectionHeader({ eyebrow, title, caption, railActive }: Props) {
-  const reduced = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-
-  // A slow horizontal drift across the whole time the header is on screen.
-  // Two rem total — the heading never leaves its column, it just refuses to
-  // sit perfectly still.
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const drift = useTransform(scrollYProgress, [0, 1], ['-1rem', '1rem']);
-
+  // The heading drifts slowly sideways across the whole time this header is
+  // on screen: two rem total, so it never leaves its column, it just refuses
+  // to sit perfectly still. `section-head` carries the view timeline and
+  // `section-drift` runs on it (globals.css) — no scroll JS.
   return (
-    <div ref={ref} className="mb-14 md:mb-20">
+    <div className="section-head mb-14 md:mb-20">
       <div className="horizon mb-12" />
 
       <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
@@ -52,15 +43,16 @@ export function SectionHeader({ eyebrow, title, caption, railActive }: Props) {
               the seam, so the 2.1rem min only has to fit "Selected" — at 320px
               "SelectedWork" (≈9.55em) wraps; from 375px up it holds one line,
               since 0.75rem + 6vw stays under (100vw − gutters) / 9.55. */}
-          <motion.h2
-            className="display text-[clamp(2.1rem,0.75rem_+_6vw,5.25rem)]"
-            style={reduced ? undefined : { x: drift }}
-          >
+          <h2 className="section-drift display text-[clamp(2.1rem,0.75rem_+_6vw,5.25rem)]">
             <Compound words={title} />
-          </motion.h2>
+          </h2>
         </div>
         {caption ? (
-          <p className="lede max-w-xs text-sm text-ink-2 md:text-right">{caption}</p>
+          // A one-to-two-line caption is headline-like, so it keeps balance —
+          // spelled out rather than via .lede, which is now `pretty`.
+          <p className="max-w-xs text-sm leading-[1.62] font-normal tracking-normal text-balance text-ink-2 md:text-right">
+            {caption}
+          </p>
         ) : null}
       </Reveal>
 

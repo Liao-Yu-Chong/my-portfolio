@@ -24,10 +24,18 @@ export function useEmailAddress() {
  */
 export function useEmailLinks() {
   const address = useEmailAddress();
+  // Until the address is assembled (server HTML, or a click before
+  // hydration) the link points at the contact section instead of '#', which
+  // with target=_blank opened a second copy of the page.
   const composeUrl = address
     ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(address)}`
-    : '#';
+    : '#contact';
   return { address, composeUrl };
+}
+
+/** New-tab attributes, but only for links that actually leave the page. */
+function externalAttrs(href: string, external?: boolean) {
+  return external && /^https?:/.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 }
 
 type CtaProps = {
@@ -52,7 +60,7 @@ export function Cta({ href, children, variant = 'primary', external, className =
     <motion.a
       href={href}
       className={`${base} ${skin} ${className}`}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      {...externalAttrs(href, external)}
       whileHover={reduced ? undefined : { y: -2 }}
       whileTap={reduced ? undefined : { y: 0, scale: 0.98 }}
       transition={spring}
@@ -105,7 +113,7 @@ export function IconCta({
       title={label}
       style={{ '--glint': glint } as CSSProperties}
       className={`glint inline-flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200 ${skin} ${className}`}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      {...externalAttrs(href, external)}
       whileHover={reduced ? undefined : { y: -2 }}
       whileTap={reduced ? undefined : { y: 0, scale: 0.96 }}
       transition={spring}

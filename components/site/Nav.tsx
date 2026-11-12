@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { navSections, profile } from '@/lib/site-data';
 import { Cta, useEmailLinks } from '@/components/ui/Cta';
@@ -17,10 +17,6 @@ export function Nav() {
   const [wide, setWide] = useState(false);
   const menuRef = useRef<HTMLUListElement>(null);
   const { composeUrl } = useEmailLinks();
-
-  // The bar doubles as the page's progress readout — the same "values over
-  // time" idea the marble rail carries, drawn as one continuous line.
-  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -142,12 +138,14 @@ export function Nav() {
       </div>
 
       {/* Sits on the header's own bottom border, so it reads as that line
-          filling in rather than as a second rule stacked under it. */}
-      <motion.div
+          filling in rather than as a second rule stacked under it. Its
+          length is a CSS scroll timeline (scroll-progress in globals.css);
+          only the fade-in once you've scrolled is driven from here. */}
+      <div
         aria-hidden="true"
-        className="absolute inset-x-0 -bottom-px h-px origin-left bg-ember"
-        style={{ scaleX: scrollYProgress, opacity: scrolled ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
+        className={`scroll-progress absolute inset-x-0 -bottom-px h-px origin-left bg-ember transition-opacity duration-300 ${
+          scrolled ? 'opacity-100' : 'opacity-0'
+        }`}
       />
     </header>
   );
