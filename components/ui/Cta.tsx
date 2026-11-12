@@ -60,7 +60,7 @@ export function Cta({ href, children, variant = 'primary', external, className =
       <span>{children}</span>
       <span
         aria-hidden="true"
-        className="font-mono transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5"
+        className="font-mono transition-transform duration-300 motion-safe:group-hover:translate-x-1 motion-safe:group-hover:-translate-y-0.5"
       >
         ↗
       </span>
