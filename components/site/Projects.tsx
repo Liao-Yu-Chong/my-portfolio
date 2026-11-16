@@ -4,7 +4,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { WorkCase } from '@/components/site/WorkCase';
 
 /**
- * The work. The project with real captures (UI Gallery, the one with a live
+ * The work. The project with real captures (F1 Grid, the one with a live
  * demo and public source) opens as a case: a sticky pane with the project,
  * its captures scrolling past beside it. The internal systems, which have
  * nothing to show publicly, follow as an index of rows.
@@ -16,7 +16,7 @@ export function Projects() {
   return (
     <section id="work" className="section" aria-labelledby="work-title">
       <div className="container">
-        <SectionHeader id="work-title" title="Selected work" lead="一個開源的元件庫，三套上線中的企業系統。" />
+        <SectionHeader id="work-title" title="Selected work" lead="一個開源的 F1 資料小站，三套上線中的企業系統。" />
 
         {cases.map((p) => (
           <WorkCase key={p.name} project={p} />

@@ -144,21 +144,21 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: 'UI Gallery',
-    kind: '個人專案，元件展示廊',
+    name: 'F1 Grid',
+    kind: '個人專案，F1 資料小站',
     context: 'Personal',
-    year: '2025',
+    year: '2026',
     description:
-      '自製的 React 元件展示廊，收錄可重用的互動 UI 元件。首發作品是支援月／週／日檢視、多日事件長條、拖拉移動與節日標記的行事曆元件。',
+      '整理 2026 賽季 F1 的車隊、車手、賽道與積分榜的小網站。不靠框架，純 JavaScript 搭配 SCSS；點選車隊整頁換成該隊塗裝色，同隊兩位車手左右對照。',
     captures: [
-      { src: '/work/calendar-month.webp', width: 1400, height: 1148, caption: '行事曆的月檢視：多日事件長條、節日標記。' },
-      { src: '/work/calendar-week.webp', width: 1400, height: 1148, caption: '切到週檢視，同一批事件依日期排開。' },
-      { src: '/work/calendar-day.webp', width: 1400, height: 1148, caption: '日檢視只看一天。' },
-      { src: '/work/btn-agile.webp', width: 1400, height: 1261, caption: '第二個元件：停用時點下去會翻轉逃跑的按鈕。' },
+      { src: '/work/f1-teams.webp', width: 1400, height: 1148, caption: '車隊頁：點任一張卡，整頁色調換成該隊塗裝。' },
+      { src: '/work/f1-drivers.webp', width: 1400, height: 1148, caption: '車手頁：同隊兩位車手左右對照。' },
+      { src: '/work/f1-circuits.webp', width: 1400, height: 1148, caption: '賽曆：每站附賽道圖，已跑完的分站自動變暗。' },
+      { src: '/work/f1-standings.webp', width: 1400, height: 1148, caption: '積分榜：車手與車隊並列，長條用車隊色標出積分差距。' },
     ],
-    live: 'https://liao-yu-chong.github.io/ui-gallery/',
-    github: 'https://github.com/Liao-Yu-Chong/ui-gallery',
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'date-fns', '@dnd-kit'],
+    live: 'https://liao-yu-chong.github.io/F1/',
+    github: 'https://github.com/Liao-Yu-Chong/F1',
+    tags: ['JavaScript', 'SCSS', 'HTML', 'Python'],
   },
   {
     name: '企業 ERP 重構',

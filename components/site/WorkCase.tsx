@@ -61,7 +61,7 @@ export function WorkCase({ project }: { project: Project }) {
         </ol>
 
         <div className={`case__actions${reachedEnd ? ' is-shown' : ''}`}>
-          {/* The accessible names carry the project ("Live Demo UI Gallery"),
+          {/* The accessible names carry the project ("Live Demo F1 Grid"),
               so a list of links doesn't show the same name twice. */}
           {project.live ? (
             <ButtonLink href={project.live} external>
