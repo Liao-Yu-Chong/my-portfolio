@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@oddbird/popover-polyfill": "^0.7.3",
-    "next": "^16.4.5",
+    "next": "^16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
